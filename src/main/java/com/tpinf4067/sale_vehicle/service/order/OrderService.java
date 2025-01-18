@@ -2,6 +2,8 @@ package com.tpinf4067.sale_vehicle.service.order;
 
 import com.tpinf4067.sale_vehicle.domain.Vehicle;
 import com.tpinf4067.sale_vehicle.service.catalog.VehicleService;
+import com.tpinf4067.sale_vehicle.service.customer.Customer;
+import com.tpinf4067.sale_vehicle.service.customer.CustomerRepository;
 import com.tpinf4067.sale_vehicle.service.document.*;
 import org.springframework.stereotype.Service;
 
@@ -11,27 +13,32 @@ import java.util.List;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final VehicleService vehicleService;
+    private final CustomerRepository customerRepository;
     private final PDFDocumentAdapter pdfAdapter;
 
-    public OrderService(OrderRepository orderRepository, VehicleService vehicleService) {
+    public OrderService(OrderRepository orderRepository, VehicleService vehicleService, CustomerRepository customerRepository) {
         this.orderRepository = orderRepository;
         this.vehicleService = vehicleService;
+        this.customerRepository = customerRepository;
         this.pdfAdapter = new PDFDocumentAdapter();
     }
 
-    public Order createOrder(Long vehicleId) {
+    public Order createOrder(Long vehicleId, Long customerId) {
         Vehicle vehicle = vehicleService.getAllVehicles().stream()
                 .filter(v -> v.getId().equals(vehicleId))
                 .findFirst()
                 .orElse(null);
 
-        if (vehicle == null) {
+        Customer customer = customerRepository.findById(customerId).orElse(null);
+
+        if (vehicle == null || customer == null) {
             return null;
         }
 
         Order order = new Order();
         order.setVehicle(vehicle);
-      
+        order.setCustomer(customer);
+        order.setState("EN_COURS");
 
         Order savedOrder = orderRepository.save(order);
 

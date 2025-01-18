@@ -24,13 +24,14 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping("/{vehicleId}")
-    public String createOrder(@PathVariable Long vehicleId) {
-        Order order = orderService.createOrder(vehicleId);
+    // 🔥 Création d'une commande avec un client associé
+    @PostMapping("/")
+    public ResponseEntity<String> createOrder(@RequestParam Long vehicleId, @RequestParam Long customerId) {
+        Order order = orderService.createOrder(vehicleId, customerId);
         if (order == null) {
-            return "❌ Véhicule non trouvé.";
+            return ResponseEntity.badRequest().body("❌ Véhicule ou Client non trouvé.");
         }
-        return "✅ Commande créée pour " + order.getVehicle().getName();
+        return ResponseEntity.ok("✅ Commande créée pour " + order.getVehicle().getName() + " par " + order.getCustomer().getName());
     }
 
     @GetMapping("/")

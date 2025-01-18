@@ -1,6 +1,7 @@
 package com.tpinf4067.sale_vehicle.service.document;
 
 import com.itextpdf.html2pdf.HtmlConverter;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -19,25 +20,24 @@ public class PDFExporter {
                 }
             }
 
-            // Vérifier si le fichier peut être créé
-            File pdfFile = new File(filePath);
-            System.out.println("📄 Création du fichier PDF : " + pdfFile.getAbsolutePath());
-
-            // Création du contenu HTML pour le PDF
+            // 🔥 Mise en forme améliorée avec HTML et CSS
             String htmlContent = "<html><head><style>" +
-                    "body { font-family: Arial, sans-serif; }" +
-                    "h1 { text-align: center; font-size: 18px; }" +
-                    "p { font-size: 14px; text-align: justify; }" +
+                    "body { font-family: Arial, sans-serif; margin: 20px; }" +
+                    "h1 { text-align: center; font-size: 22px; color: #333; }" +
+                    "p { font-size: 14px; margin-bottom: 10px; }" +
+                    "hr { border: 1px solid #ddd; margin: 10px 0; }" +
+                    "strong { color: #555; }" +
                     "</style></head><body>" +
                     "<h1>" + customDocument.getTitle() + "</h1>" +
-                    "<p>" + customDocument.getContent() + "</p>" +
+                    "<hr>" +
+                    customDocument.getContent() +
                     "</body></html>";
 
             // Conversion du HTML en PDF
-            OutputStream outputStream = new FileOutputStream(pdfFile);
+            OutputStream outputStream = new FileOutputStream(filePath);
             HtmlConverter.convertToPdf(htmlContent, outputStream);
 
-            System.out.println("✅ Fichier PDF généré avec succès : " + pdfFile.getAbsolutePath());
+            System.out.println("✅ Fichier PDF généré avec succès : " + filePath);
         } catch (Exception e) {
             System.err.println("❌ Erreur lors de l'exportation en PDF : " + e.getMessage());
             e.printStackTrace();

@@ -1,6 +1,8 @@
 package com.tpinf4067.sale_vehicle.service.order;
 
 import com.tpinf4067.sale_vehicle.domain.Vehicle;
+import com.tpinf4067.sale_vehicle.service.customer.Customer;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,11 +21,15 @@ public class Order {
     @ManyToOne
     private Vehicle vehicle;
 
+    @ManyToOne
+    private Customer customer;
+
     // Stocker l'état en base sous forme de String
     private String state;
 
-    public Order(Vehicle vehicle) {
+    public Order(Vehicle vehicle, Customer customer) {
         this.vehicle = vehicle;
+        this.customer = customer;
         this.state = "EN_COURS"; // Par défaut, une nouvelle commande est "En cours"
     }
 
