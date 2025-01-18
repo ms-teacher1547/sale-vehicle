@@ -31,7 +31,7 @@ public class OrderService {
 
         Order order = new Order();
         order.setVehicle(vehicle);
-        order.setStatus("En cours");
+      
 
         Order savedOrder = orderRepository.save(order);
 
@@ -55,5 +55,20 @@ public class OrderService {
 
     public List<Order> getAllOrders() {
         return orderRepository.findAll();
+    }
+
+    public Order changeOrderStatus(Long orderId, boolean next) {
+        Order order = orderRepository.findById(orderId).orElse(null);
+
+        if (order != null) {
+            if (next) {
+                order.nextState();
+            } else {
+                order.previousState();
+            }
+            orderRepository.save(order); // ✅ Sauvegarder l'état mis à jour
+        }
+
+        return order;
     }
 }

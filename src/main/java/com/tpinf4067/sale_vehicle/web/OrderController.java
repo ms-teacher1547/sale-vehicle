@@ -65,4 +65,16 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @PutMapping("/{orderId}/next")
+    public String nextStatus(@PathVariable Long orderId) {
+        Order order = orderService.changeOrderStatus(orderId, true);
+        return order != null ? "✅ Nouveau statut : " + order.getStatus() : "❌ Commande non trouvée.";
+    }
+
+    @PutMapping("/{orderId}/previous")
+    public String previousStatus(@PathVariable Long orderId) {
+        Order order = orderService.changeOrderStatus(orderId, false);
+        return order != null ? "✅ Nouveau statut : " + order.getStatus() : "❌ Commande non trouvée.";
+    }
 }
