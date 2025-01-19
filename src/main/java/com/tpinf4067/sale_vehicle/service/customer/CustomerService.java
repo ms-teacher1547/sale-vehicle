@@ -1,7 +1,6 @@
 package com.tpinf4067.sale_vehicle.service.customer;
 
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +30,7 @@ public class CustomerService {
             customer.setEmail(updatedCustomer.getEmail());
             customer.setAddress(updatedCustomer.getAddress());
             customer.setType(updatedCustomer.getType());
+            customer.setSubsidiaries(updatedCustomer.getSubsidiaries()); // 📌 Mise à jour des filiales
             return customerRepository.save(customer);
         }).orElse(null);
     }

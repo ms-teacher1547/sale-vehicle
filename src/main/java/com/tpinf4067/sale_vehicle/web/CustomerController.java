@@ -2,6 +2,8 @@ package com.tpinf4067.sale_vehicle.web;
 
 import com.tpinf4067.sale_vehicle.service.customer.Customer;
 import com.tpinf4067.sale_vehicle.service.customer.CustomerService;
+import com.tpinf4067.sale_vehicle.service.customer.enums.CustomerType;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,5 +46,16 @@ public class CustomerController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
         return customerService.deleteCustomer(id) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    }
+
+    // 📌 Ajouter des filiales à une société
+    @PostMapping("/{companyId}/subsidiaries")
+    public ResponseEntity<Customer> addSubsidiary(@PathVariable Long companyId, @RequestBody Customer subsidiary) {
+        Optional<Customer> company = customerService.getCustomerById(companyId);
+        if (company.isPresent() && company.get().getType() == CustomerType.COMPANY) {
+            company.get().getSubsidiaries().add(subsidiary);
+            return ResponseEntity.ok(customerService.updateCustomer(companyId, company.get()));
+        }
+        return ResponseEntity.badRequest().build();
     }
 }

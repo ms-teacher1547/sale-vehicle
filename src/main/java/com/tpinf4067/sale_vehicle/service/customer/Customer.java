@@ -4,6 +4,8 @@ import com.tpinf4067.sale_vehicle.service.customer.enums.CustomerType;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -22,4 +24,9 @@ public class Customer {
 
     @Enumerated(EnumType.STRING)
     private CustomerType type;
+
+    // 📌 Ajout pour gérer les filiales (Composite Pattern)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "parent_company_id")
+    private List<Customer> subsidiaries;
 }
