@@ -11,11 +11,13 @@ import java.util.List;
 
 @Service
 public class OrderService {
+    // 🔥 Injection de dépendances
     private final OrderRepository orderRepository;
     private final VehicleService vehicleService;
     private final CustomerRepository customerRepository;
     private final PDFDocumentAdapter pdfAdapter;
 
+    // 🔥 Constructeur
     public OrderService(OrderRepository orderRepository, VehicleService vehicleService, CustomerRepository customerRepository) {
         this.orderRepository = orderRepository;
         this.vehicleService = vehicleService;
@@ -23,6 +25,7 @@ public class OrderService {
         this.pdfAdapter = new PDFDocumentAdapter();
     }
 
+    // 🔥 Création d'une commande
     public Order createOrder(Long vehicleId, Long customerId) {
         Vehicle vehicle = vehicleService.getAllVehicles().stream()
                 .filter(v -> v.getId().equals(vehicleId))
@@ -60,10 +63,12 @@ public class OrderService {
         return savedOrder;
     }
 
+    // 🔥 Récupérer toutes les commandes
     public List<Order> getAllOrders() {
         return orderRepository.findAll();
     }
 
+    // 🔥 Changer l'état d'une commande
     public Order changeOrderStatus(Long orderId, boolean next) {
         Order order = orderRepository.findById(orderId).orElse(null);
 
@@ -78,4 +83,21 @@ public class OrderService {
 
         return order;
     }
+
+    // 🔥 Rechercher des commandes
+    public List<Order> searchOrders(Long customerId, String state) {
+        if (customerId != null && state != null) {
+            return orderRepository.findByCustomerId(customerId)
+                    .stream()
+                    .filter(o -> o.getState().equalsIgnoreCase(state)) // ✅ Correction de la comparaison
+                    .toList();
+        } else if (customerId != null) {
+            return orderRepository.findByCustomerId(customerId);
+        } else if (state != null) {
+            return orderRepository.findByStateIgnoreCase(state);
+        } else {
+            return orderRepository.findAll();
+        }
+    }
+    
 }

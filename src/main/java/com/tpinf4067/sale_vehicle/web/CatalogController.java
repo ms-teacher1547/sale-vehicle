@@ -55,4 +55,13 @@ public class CatalogController {
         vehicleService.deleteVehicleById(id);
         return "Vehicle avec l'id " + id + " a été supprimé avec succès";
     }
+
+    // Endpoint pour rechercher des véhicules
+    @GetMapping("vehicles/search")
+    public List<Vehicle> searchVehicles(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Double priceMin,
+            @RequestParam(required = false) Double priceMax) {
+        return vehicleService.searchVehicles(name, priceMin, priceMax);
+    }   
 }

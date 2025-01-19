@@ -14,17 +14,21 @@ import java.util.Optional;
 @RequestMapping("/api/customers")
 public class CustomerController {
 
+    // 📌 Injecter le service CustomerService
     private final CustomerService customerService;
 
+    // 📌 Injecter le service CustomerService
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
     }
 
+    // 📌 Implémenter les méthodes CRUD pour les clients
     @GetMapping("/")
     public List<Customer> getAllCustomers() {
         return customerService.getAllCustomers();
     }
 
+    // 📌 Ajouter une méthode pour récupérer un client par ID
     @GetMapping("/{id}")
     public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) {
         Optional<Customer> customer = customerService.getCustomerById(id);
@@ -32,17 +36,20 @@ public class CustomerController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    // 📌 Ajouter une méthode pour créer un client
     @PostMapping("/")
     public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
         return ResponseEntity.ok(customerService.createCustomer(customer));
     }
 
+    // 📌 Ajouter une méthode pour mettre à jour un client
     @PutMapping("/{id}")
     public ResponseEntity<Customer> updateCustomer(@PathVariable Long id, @RequestBody Customer updatedCustomer) {
         Customer updated = customerService.updateCustomer(id, updatedCustomer);
         return updated != null ? ResponseEntity.ok(updated) : ResponseEntity.notFound().build();
     }
 
+    // 📌 Ajouter une méthode pour supprimer un client
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
         return customerService.deleteCustomer(id) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
@@ -57,5 +64,13 @@ public class CustomerController {
             return ResponseEntity.ok(customerService.updateCustomer(companyId, company.get()));
         }
         return ResponseEntity.badRequest().build();
+    }
+
+    // 📌 Rechercher des clients par nom et/ou type
+    @GetMapping("/search")
+    public List<Customer> searchCustomers(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) CustomerType type) {
+        return customerService.searchCustomers(name, type);
     }
 }

@@ -1,7 +1,6 @@
 package com.tpinf4067.sale_vehicle.service.catalog;
 
 import com.tpinf4067.sale_vehicle.domain.Vehicle;
-import com.tpinf4067.sale_vehicle.repository.VehicleRepository;
 import com.tpinf4067.sale_vehicle.service.catalog.observer.EmailNotifier;
 import com.tpinf4067.sale_vehicle.service.catalog.observer.Observer;
 import com.tpinf4067.sale_vehicle.service.catalog.observer.VehicleNotifier;
@@ -45,5 +44,20 @@ public class VehicleService {
 
     public void removeObserver(Observer observer) {
         vehicleNotifier.removeObserver(observer);
+    }
+
+    public List<Vehicle> searchVehicles(String name, Double priceMin, Double priceMax) {
+        if (name != null && priceMin != null && priceMax != null) {
+            return vehicleRepository.findByNameContainingIgnoreCase(name)
+                    .stream()
+                    .filter(v -> v.getPrice() >= priceMin && v.getPrice() <= priceMax)
+                    .toList();
+        } else if (name != null) {
+            return vehicleRepository.findByNameContainingIgnoreCase(name);
+        } else if (priceMin != null && priceMax != null) {
+            return vehicleRepository.findByPriceBetween(priceMin, priceMax);
+        } else {
+            return vehicleRepository.findAll();
+        }
     }
 }

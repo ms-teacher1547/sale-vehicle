@@ -35,6 +35,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/catalog/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/orders/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/orders/**").hasAnyRole("USER", "ADMIN") // 🔥 Ajouté ici
+                        .requestMatchers(HttpMethod.GET, "/api/catalog/vehicles/search").permitAll() // ✅ Autoriser tous
+                        .requestMatchers(HttpMethod.POST, "/api/catalog/vehicles/**").hasRole("ADMIN") // ✅ Seul ADMIN peut ajouter
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

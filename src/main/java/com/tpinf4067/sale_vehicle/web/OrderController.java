@@ -18,8 +18,10 @@ import java.util.List;
 @RequestMapping("/api/orders")
 public class OrderController {
 
+    // 🔥 Injection de dépendance du service de commande
     private final OrderService orderService;
 
+    // 🔥 Constructeur
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }
@@ -34,11 +36,13 @@ public class OrderController {
         return ResponseEntity.ok("✅ Commande créée pour " + order.getVehicle().getName() + " par " + order.getCustomer().getName());
     }
 
+    // 🔥 Récupération de toutes les commandes
     @GetMapping("/")
     public List<Order> getAllOrders() {
         return orderService.getAllOrders();
     }
 
+    // 🔥 Récupération des commandes par client
     @GetMapping("/documents")
     public String getAllDocuments() {
         DocumentLiasseSingleton.getInstance().showAllDocuments();
@@ -67,6 +71,7 @@ public class OrderController {
         }
     }
 
+    // 🔥 Endpoint pour changer le statut d'une commande
     @PutMapping("/{orderId}/next")
     public String nextStatus(@PathVariable Long orderId) {
         Order order = orderService.changeOrderStatus(orderId, true);
@@ -77,5 +82,13 @@ public class OrderController {
     public String previousStatus(@PathVariable Long orderId) {
         Order order = orderService.changeOrderStatus(orderId, false);
         return order != null ? "✅ Nouveau statut : " + order.getStatus() : "❌ Commande non trouvée.";
+    }
+
+    // 🔥 Rechercher des commandes par client et/ou état
+    @GetMapping("/search")
+    public List<Order> searchOrders(
+            @RequestParam(required = false) Long customerId,
+            @RequestParam(required = false) String state) {
+        return orderService.searchOrders(customerId, state);
     }
 }
