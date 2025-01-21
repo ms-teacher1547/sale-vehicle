@@ -13,12 +13,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Scooter extends Vehicle{
+public class Scooter extends Vehicle {
 
-    private boolean hasStorageBox;
+    private boolean hasStorageBox; // Présence de coffre de rangement
 
-    public Scooter(String name, double price, boolean hasStorageBox) {
-        super(name, price);
+    public Scooter(String name, double price, boolean hasStorageBox, int stockQuantity, int yearOfManufacture, String fuelType, int mileage) {
+        super(name, price, stockQuantity, yearOfManufacture, fuelType, mileage);
         this.hasStorageBox = hasStorageBox;
     }
 }

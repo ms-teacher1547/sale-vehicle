@@ -17,8 +17,8 @@ public class Car extends Vehicle{
 
     private int numberOfDoors;
 
-    public Car(String name, double price, int numberOfDoors) {
-        super(name, price);
+    public Car(String name, double price, int numberOfDoors, int stockQuantity, int yearOfManufacture, String fuelType, int mileage) {
+        super(name, price, stockQuantity, yearOfManufacture, fuelType, mileage);
         this.numberOfDoors = numberOfDoors;
     }
 }

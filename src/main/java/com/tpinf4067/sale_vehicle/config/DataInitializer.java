@@ -1,10 +1,11 @@
 package com.tpinf4067.sale_vehicle.config;
 
-import com.tpinf4067.sale_vehicle.service.catalog.VehicleService;
-import com.tpinf4067.sale_vehicle.service.catalog.observer.EmailNotifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import com.tpinf4067.sale_vehicle.patterns.catalog.observer.EmailNotifier;
+import com.tpinf4067.sale_vehicle.service.VehicleService;
 
 @Configuration
 public class DataInitializer {
