@@ -48,10 +48,9 @@ public class OrderDocumentBuilder implements DocumentBuilder {
         orderContent.append("<p><strong>🛒 Détails de la commande</strong></p>");
         orderContent.append("<hr>");
 
-        double totalPrice = 0;
         for (Vehicle vehicle : order.getVehicles()) {
             orderContent.append("<p><strong>Véhicule :</strong> ").append(vehicle.getName()).append("</p>");
-            orderContent.append("<p><strong>Prix :</strong> ").append(vehicle.getPrice()).append(" €</p>");
+            orderContent.append("<p><strong>Prix :</strong> ").append(vehicle.getPrice()).append(" FCFA</p>");
 
             // Ajout des options
             List<Option> options = order.getOptions();
@@ -62,10 +61,9 @@ public class OrderDocumentBuilder implements DocumentBuilder {
             }
 
             orderContent.append("<hr>");
-            totalPrice += vehicle.getPrice();
         }
 
-        orderContent.append("<p><strong>💰 Total :</strong> ").append(totalPrice).append(" €</p>");
+        orderContent.append("<p><strong>💰 Total :</strong> ").append(order.getTotalPrice()).append(" FCFA</p>");
         orderContent.append("<hr>");
         orderContent.append("<p><strong>👤 Informations du Client</strong></p>");
         orderContent.append("<p><strong>Nom :</strong> ").append(clientName).append("</p>");
@@ -105,7 +103,7 @@ public class OrderDocumentBuilder implements DocumentBuilder {
         }
         cessionContent.append("<p><strong>Vendeur :</strong> Entreprise XYZ</p>");
         cessionContent.append("<p><strong>Acheteur :</strong> ").append(clientName).append("</p>");
-        cessionContent.append("<p><strong>Prix :</strong> ").append(totalPrice).append(" €</p>");
+        cessionContent.append("<p><strong>Prix :</strong> ").append(order.getTotalPrice()).append(" FCFA</p>");
         cessionContent.append("<p><strong>Date de génération :</strong> ").append(formattedDate).append("</p>");
 
         cessionDoc.setContent(cessionContent.toString());

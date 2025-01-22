@@ -81,6 +81,7 @@ public class Order {
         return vehiclesPrice + optionsPrice;
     }
 
+
     // ✅ Gestion des états
     public void nextState() {
         switch (state) {
@@ -90,6 +91,7 @@ public class Order {
         }
     }
 
+    // ✅ Retourner à l'état précédent
     public void previousState() {
         switch (state) {
             case "LIVREE" -> state = "VALIDEE";
@@ -98,6 +100,7 @@ public class Order {
         }
     }
 
+    //  ✅ Récupérer l'état sous forme de texte
     public String getStatus() {
         return switch (state) {
             case "VALIDEE" -> "Validée";
@@ -105,4 +108,6 @@ public class Order {
             default -> "En cours";
         };
     }
+
+    
 }

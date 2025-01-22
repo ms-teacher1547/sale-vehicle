@@ -6,6 +6,7 @@ import com.tpinf4067.sale_vehicle.repository.*;
 
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -54,8 +55,12 @@ public class CartService {
         cartItem.setOptions(options);
         cartItem.setCart(cart); // Lien bidirectionnel
 
+        // 
         cart.getItems().add(cartItem);
-        
+        if (cart.getItems() == null) {
+            cart.setItems(new ArrayList<>());
+        }
+
         Cart savedCart = cartRepository.save(cart);
 
         System.out.println("✅ Article ajouté au panier: " + cartItem);
