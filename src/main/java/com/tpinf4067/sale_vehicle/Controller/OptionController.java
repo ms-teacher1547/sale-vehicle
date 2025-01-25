@@ -3,6 +3,7 @@ package com.tpinf4067.sale_vehicle.Controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.tpinf4067.sale_vehicle.domain.IncompatibleOption;
 import com.tpinf4067.sale_vehicle.domain.Option;
 import com.tpinf4067.sale_vehicle.service.OptionService;
 
@@ -20,10 +21,15 @@ public class OptionController {
 
     // 🔹 Ajouter une option (ADMIN uniquement)
     @PostMapping("/")
-    public ResponseEntity<Option> createOption(@RequestBody Option option) {
-        Option savedOption = optionService.save(option);
-        return ResponseEntity.ok(savedOption);
+    public ResponseEntity<?> createOption(@RequestBody Option option) {
+        try {
+            Option savedOption = optionService.save(option);
+            return ResponseEntity.ok(savedOption);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("⚠️ Catégorie invalide. Utilisez l'une de ces valeurs : PERFORMANCE, SÉCURITÉ, CONFORT, MULTIMÉDIA.");
+        }
     }
+    
 
     // 🔹 Récupérer toutes les options (PUBLIC)
     @GetMapping("/")
@@ -37,6 +43,21 @@ public class OptionController {
         optionService.addIncompatibility(request.getOptionId1(), request.getOptionId2());
         return ResponseEntity.ok("🚫 Incompatibilité ajoutée avec succès !");
     }
+
+    // 🔥 Supprimer une option (ADMIN uniquement)
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteOption(@PathVariable Long id) {
+        optionService.deleteOption(id);
+        return ResponseEntity.ok("🚫 Option supprimée avec succès !");
+    }
+
+    // 🔥 Récupérer toutes les incompatibilités existantes
+    @GetMapping("/incompatible")
+    public ResponseEntity<List<IncompatibleOption>> getAllIncompatibilities() {
+        return ResponseEntity.ok(optionService.getAllIncompatibilities());
+    }
+
+
 
     // 📌 Classe interne pour gérer la requête
     static class IncompatibilityRequest {

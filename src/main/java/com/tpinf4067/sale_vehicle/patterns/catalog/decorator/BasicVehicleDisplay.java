@@ -13,4 +13,9 @@ public class BasicVehicleDisplay implements VehicleDisplay {
     public String display() {
         return "Véhicule : " + vehicle.getName() + " | Prix : " + vehicle.getPrice();
     }
+
+    @Override
+    public Vehicle getVehicle() {
+        return vehicle; // Retourne le véhicule
+    }
 }

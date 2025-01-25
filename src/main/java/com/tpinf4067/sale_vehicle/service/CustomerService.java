@@ -106,7 +106,10 @@ public class CustomerService {
             customer.getSubsidiaries() != null && !customer.getSubsidiaries().isEmpty()) {
             throw new IllegalStateException("Un client INDIVIDUAL ne peut pas avoir de filiales.");
         }
+        if (customer.getType() == CustomerType.COMPANY && 
+            (customer.getName() == null || customer.getAddress() == null)) {
+            throw new IllegalStateException("Une société doit avoir un nom et une adresse.");
+        }
         return customerRepository.save(customer);
     }
-    
 }

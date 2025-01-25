@@ -6,7 +6,6 @@ import com.tpinf4067.sale_vehicle.repository.*;
 
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -33,13 +32,16 @@ public class CartService {
         });
     }
 
-    public Cart addToCart(Long customerId, Long vehicleId, List<Long> optionIds) {
+    public Cart addToCart(Long customerId, Long vehicleId, List<Long> optionIds, int quantity) {
         Cart cart = getCartForCustomer(customerId);
+    
+        // Vérification du véhicule
         Vehicle vehicle = vehicleRepository.findById(vehicleId)
-                .orElseThrow(() -> new IllegalArgumentException("Véhicule non trouvé avec ID: " + vehicleId));
-
+            .orElseThrow(() -> new IllegalArgumentException("Véhicule non trouvé avec ID: " + vehicleId));
+    
+        // Vérification des options
         List<Option> options = optionRepository.findAllById(optionIds);
-
+    
         // Vérification des incompatibilités
         for (int i = 0; i < options.size(); i++) {
             for (int j = i + 1; j < options.size(); j++) {
@@ -48,24 +50,23 @@ public class CartService {
                 }
             }
         }
-
+    
         // Création de l'item du panier
         CartItem cartItem = new CartItem();
         cartItem.setVehicle(vehicle);
         cartItem.setOptions(options);
-        cartItem.setCart(cart); // Lien bidirectionnel
-
-        // 
+        cartItem.setQuantity(quantity); // Ajout de la quantité
+        cartItem.setCart(cart);
+    
         cart.getItems().add(cartItem);
-        if (cart.getItems() == null) {
-            cart.setItems(new ArrayList<>());
-        }
-
+    
         Cart savedCart = cartRepository.save(cart);
-
+    
         System.out.println("✅ Article ajouté au panier: " + cartItem);
         return savedCart;
     }
+    
+    
 
     public void removeFromCart(Long cartId, Long itemId) {
         Cart cart = cartRepository.findById(cartId)

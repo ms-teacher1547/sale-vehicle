@@ -1,11 +1,15 @@
 package com.tpinf4067.sale_vehicle.Controller;
 
+import com.tpinf4067.sale_vehicle.patterns.payment.*;
+import com.tpinf4067.sale_vehicle.service.PaymentService;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.tpinf4067.sale_vehicle.patterns.payment.Payment;
-import com.tpinf4067.sale_vehicle.patterns.payment.PaymentService;
-import com.tpinf4067.sale_vehicle.patterns.payment.PaymentType;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @RestController
 @RequestMapping("/api/payments")
@@ -17,21 +21,42 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
+    // ✅ Création d’un paiement avec calcul des taxes
     @PostMapping("/")
-    public ResponseEntity<Payment> processPayment(@RequestParam Long orderId, @RequestParam PaymentType paymentType, @RequestParam String country) {
-        Payment payment = paymentService.processPayment(orderId, paymentType, country);
-        return payment != null ? ResponseEntity.ok(payment) : ResponseEntity.badRequest().build();
+    public ResponseEntity<Payment> createPayment(@RequestParam Long orderId,
+                                                 @RequestParam PaymentType paymentType,
+                                                 @RequestParam String country) {
+        return ResponseEntity.ok(paymentService.processPayment(orderId, paymentType, country));
     }
 
+    // ✅ Confirmation d’un paiement
     @PutMapping("/{paymentId}/confirm")
     public ResponseEntity<Payment> confirmPayment(@PathVariable Long paymentId) {
-        Payment payment = paymentService.confirmPayment(paymentId);
-        return payment != null ? ResponseEntity.ok(payment) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(paymentService.confirmPayment(paymentId));
     }
 
+    // ✅ Rejet d’un paiement
     @PutMapping("/{paymentId}/reject")
     public ResponseEntity<Payment> rejectPayment(@PathVariable Long paymentId) {
-        Payment payment = paymentService.rejectPayment(paymentId);
-        return payment != null ? ResponseEntity.ok(payment) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(paymentService.rejectPayment(paymentId));
+    }
+
+    // ✅ Téléchargement de la facture PDF
+    @GetMapping("/invoice/{filename}")
+    public ResponseEntity<Resource> downloadInvoice(@PathVariable String filename) {
+        try {
+            Path filePath = Paths.get("documents").resolve(filename).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+
+            if (!resource.exists() || !resource.isReadable()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                    .body(resource);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 }

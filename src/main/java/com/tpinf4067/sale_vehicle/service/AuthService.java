@@ -30,11 +30,10 @@ public class AuthService {
         User user = userOptional.get(); // Récupération correcte de l'utilisateur
     
         if (passwordEncoder.matches(password, user.getPassword())) {
-            return jwtUtil.generateToken(username);
+            return jwtUtil.generateToken(user.getUsername(), user.getRole()); // ✅ Ajouter le rôle dans le token
         }
         return null;
     }
-    
 
     public User register(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));

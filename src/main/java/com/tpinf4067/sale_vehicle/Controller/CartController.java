@@ -6,11 +6,25 @@ import com.tpinf4067.sale_vehicle.service.CartService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 @RestController
 @RequestMapping("/api/cart")
 public class CartController {
+
+    @ControllerAdvice
+    public class GlobalExceptionHandler {
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<Map<String, String>> handleIllegalStateException(IllegalStateException e) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("error", e.getMessage());
+        return ResponseEntity.badRequest().body(errorResponse);
+    }
+}
 
     private final CartService cartService;
 
@@ -26,7 +40,7 @@ public class CartController {
     // ✅ Modifié pour accepter JSON au lieu de RequestParams
     @PostMapping("/add")
     public ResponseEntity<Cart> addToCart(@RequestBody CartRequest request) {
-        return ResponseEntity.ok(cartService.addToCart(request.getCustomerId(), request.getVehicleId(), request.getOptions()));
+        return ResponseEntity.ok(cartService.addToCart(request.getCustomerId(), request.getVehicleId(), request.getOptions(), request.getQuantity()));
     }
 
     @DeleteMapping("/{cartId}/remove/{itemId}")
@@ -40,6 +54,7 @@ public class CartController {
         private Long customerId;
         private Long vehicleId;
         private List<Long> options;
+        private int quantity; // Ajout de la quantité
 
         public Long getCustomerId() {
             return customerId;
@@ -64,5 +79,14 @@ public class CartController {
         public void setOptions(List<Long> options) {
             this.options = options;
         }
+
+        public int getQuantity() { // Getter pour la quantité
+            return quantity;
+        }
+
+        public void setQuantity(int quantity) { // Setter pour la quantité
+            this.quantity = quantity;
+        }
     }
+
 }

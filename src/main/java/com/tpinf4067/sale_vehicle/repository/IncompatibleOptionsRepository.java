@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IncompatibleOptionsRepository extends JpaRepository<IncompatibleOptions, Long> {
     boolean existsByOption1AndOption2(Option option1, Option option2);
+    
 }

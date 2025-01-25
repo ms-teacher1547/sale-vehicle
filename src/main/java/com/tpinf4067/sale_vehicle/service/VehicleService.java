@@ -39,11 +39,15 @@ public class VehicleService {
     
     // ✅ Ajout de la méthode d'ajout
     public Vehicle saveVehicle(Vehicle vehicle) {
+        if (vehicle.getPrice() <= 0) {
+            throw new IllegalArgumentException("Le prix doit être positif.");
+        }
+        if (vehicle.getName() == null || vehicle.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Le nom du véhicule ne peut pas être vide.");
+        }
+    
         Vehicle savedVehicle = vehicleRepository.save(vehicle);
-        
-        // 🔥 Notifier les observateurs
         vehicleNotifier.notifyObservers("🚗 Nouveau véhicule ajouté : " + vehicle.getName() + " au prix de " + vehicle.getPrice());
-
         return savedVehicle;
     }
 
@@ -121,14 +125,6 @@ public class VehicleService {
         }).collect(Collectors.toList());
     }
 
-    // // ✅ Recherche classique (nom et prix)
-    // public List<Vehicle> searchVehicles(String name, Double priceMin, Double priceMax) {
-    //     return vehicleRepository.findAll().stream()
-    //             .filter(vehicle -> (name == null || vehicle.getName().toLowerCase().contains(name.toLowerCase()))
-    //                     && (priceMin == null || vehicle.getPrice() >= priceMin)
-    //                     && (priceMax == null || vehicle.getPrice() <= priceMax))
-    //             .collect(Collectors.toList());
-    // }
 
     // ✅ Recherche avancée (nom, prix min, prix max) et prise en charge des mots-clés
     public List<Vehicle> searchVehicles(String name, Double priceMin, Double priceMax, String keywords, String operator) {
