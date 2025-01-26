@@ -36,10 +36,13 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/catalog/vehicles/**").hasRole("ADMIN") // Seul l'admin peut ajouter un véhicule
                 .requestMatchers(HttpMethod.PUT, "/api/catalog/vehicles/**").hasRole("ADMIN") // Seul l'admin peut modifier
                 .requestMatchers(HttpMethod.DELETE, "/api/catalog/vehicles/**").hasRole("ADMIN") // Seul l'admin peut supprimer
-                .requestMatchers(HttpMethod.GET, "/api/orders/**").hasAnyRole("USER", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/orders/**").hasRole( "ADMIN")
                 .requestMatchers(HttpMethod.POST, "/api/orders/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/customers/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/customers/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/api/payments/**").hasAnyRole("USER", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/payments/**").hasAnyRole("USER", "ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/payments/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/api/options/**").hasRole("ADMIN")  // 🔥 Seul ADMIN peut ajouter une option
                 .requestMatchers(HttpMethod.POST, "/api/options/incompatible").hasRole("ADMIN") // 🔥 Seul ADMIN peut définir les incompatibilités
                 .requestMatchers(HttpMethod.DELETE, "/api/options/**").hasRole("ADMIN")  // 🔥 Seul ADMIN peut supprimer une option

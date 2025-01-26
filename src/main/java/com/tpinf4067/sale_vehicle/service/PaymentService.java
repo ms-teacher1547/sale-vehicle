@@ -2,8 +2,11 @@ package com.tpinf4067.sale_vehicle.service;
 
 import com.tpinf4067.sale_vehicle.patterns.payment.*;
 import com.tpinf4067.sale_vehicle.repository.OrderRepository;
+import com.tpinf4067.sale_vehicle.repository.PaymentRepository;
 import com.tpinf4067.sale_vehicle.patterns.document.*;
 import com.tpinf4067.sale_vehicle.patterns.order.factory.Order;
+import com.tpinf4067.sale_vehicle.patterns.payment.strategy.TaxStrategy;
+import com.tpinf4067.sale_vehicle.patterns.payment.strategy.TaxStrategyFactory;
 
 import org.springframework.stereotype.Service;
 
@@ -20,7 +23,7 @@ public class PaymentService {
         this.pdfAdapter = new PDFDocumentAdapter();
     }
 
-    // ✅ Traiter un paiement avec calcul des taxes
+    // ✅ Traiter un paiement avec calcul des taxes en utilisant Strategy Pattern
     public Payment processPayment(Long orderId, PaymentType paymentType, String country) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Commande non trouvée !"));
@@ -30,8 +33,13 @@ public class PaymentService {
             throw new IllegalStateException("La commande a déjà été payée !");
         }
 
-        // 🔥 Création du paiement avec calcul des taxes
-        Payment payment = new Payment(order, paymentType, country);
+        // 🔥 Utilisation du Pattern Strategy pour le calcul des taxes
+        TaxStrategy taxStrategy = TaxStrategyFactory.getTaxStrategy(country);
+        double taxes = taxStrategy.calculateTax(order.getTotalPrice());
+        double totalAmount = order.getTotalPrice() + taxes;
+
+        // 🔥 Création du paiement
+        Payment payment = new Payment(order, paymentType, country, order.getTotalPrice(), taxes, totalAmount);
         paymentRepository.save(payment);
 
         System.out.println("💳 Paiement créé pour la commande #" + orderId + " | Montant total : " + payment.getTotalAmount() + " €");
@@ -85,9 +93,9 @@ public class PaymentService {
         String content = "<p><strong>Commande #" + order.getId() + "</strong></p>" +
                          "<p><strong>Client :</strong> " + order.getCustomer().getName() + "</p>" +
                          "<p><strong>Pays :</strong> " + payment.getCountry() + "</p>" +
-                         "<p><strong>Montant HT :</strong> " + payment.getAmount() + " €</p>" +
-                         "<p><strong>Taxes :</strong> " + payment.getTaxes() + " €</p>" +
-                         "<p><strong>Total TTC :</strong> " + payment.getTotalAmount() + " €</p>";
+                         "<p><strong>Montant HT :</strong> " + payment.getAmount() + " FCFA</p>" +
+                         "<p><strong>Taxes :</strong> " + payment.getTaxes() + " FCFA</p>" +
+                         "<p><strong>Total TTC :</strong> " + payment.getTotalAmount() + " FCFA</p>";
 
         invoice.setContent(content);
         DocumentLiasseSingleton.getInstance().addDocument(invoice);

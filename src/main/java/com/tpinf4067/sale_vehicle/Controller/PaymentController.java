@@ -23,11 +23,10 @@ public class PaymentController {
 
     // ✅ Création d’un paiement avec calcul des taxes
     @PostMapping("/")
-    public ResponseEntity<Payment> createPayment(@RequestParam Long orderId,
-                                                 @RequestParam PaymentType paymentType,
-                                                 @RequestParam String country) {
-        return ResponseEntity.ok(paymentService.processPayment(orderId, paymentType, country));
+    public ResponseEntity<Payment> createPayment(@RequestBody PaymentRequest request) {
+        return ResponseEntity.ok(paymentService.processPayment(request.getOrderId(), request.getPaymentType(), request.getCountry()));
     }
+    
 
     // ✅ Confirmation d’un paiement
     @PutMapping("/{paymentId}/confirm")
