@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.tpinf4067.sale_vehicle.domain.Option;
 import com.tpinf4067.sale_vehicle.domain.Vehicle;
 import com.tpinf4067.sale_vehicle.patterns.customer.Customer;
@@ -30,7 +30,7 @@ public class Order {
     private Long id;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonBackReference
     private Customer customer;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -105,20 +105,16 @@ public class Order {
 
         this.orderVehicles.add(orderVehicle);
     }
-
     public double getTotalPrice() {
         double vehiclesPrice = orderVehicles.stream()
             .mapToDouble(orderVehicle -> orderVehicle.getVehicle().getPrice() * orderVehicle.getQuantity())
             .sum();
-
+    
         double optionsPrice = options.stream().mapToDouble(Option::getPrice).sum();
-
-        double totalPrice = vehiclesPrice + optionsPrice;
-
-        // 🔥 Formater pour éviter l'affichage en notation scientifique
-        DecimalFormat df = new DecimalFormat("#.##");
-        return Double.parseDouble(df.format(totalPrice));   
+    
+        return vehiclesPrice + optionsPrice; // 🔥 Retourne un double brut sans formatage
     }
+    
 
     public String getStateString() {
         return stateName;

@@ -32,9 +32,9 @@ public class OrderDocumentBuilder implements DocumentBuilder {
         return this.document;
     }
 
-    // ✅ Ajoute un formateur global pour assurer un affichage correct
+    // ✅ Ajoute un formateur pour afficher correctement les prix
     private static final DecimalFormat PRICE_FORMAT = new DecimalFormat("#,###.00");
-    
+
     public void constructOrderDocuments(Order order) {
         String clientName = order.getCustomer() != null ? order.getCustomer().getName() : "Client inconnu";
         String clientEmail = order.getCustomer() != null ? order.getCustomer().getEmail() : "Non fourni";
@@ -46,7 +46,7 @@ public class OrderDocumentBuilder implements DocumentBuilder {
 
         // 📌 **Bon de commande**
         Document orderDoc = new Document();
-        orderDoc.setTitle("Bon de Commande");
+        orderDoc.setTitle("📄 Bon de Commande");
 
         StringBuilder orderContent = new StringBuilder();
         orderContent.append("<p><strong>🛒 Détails de la commande</strong></p>");
@@ -55,21 +55,23 @@ public class OrderDocumentBuilder implements DocumentBuilder {
         for (OrderVehicle orderVehicle : order.getOrderVehicles()) {
             orderContent.append("<p><strong>Véhicule :</strong> ").append(orderVehicle.getVehicle().getName()).append("</p>");
             orderContent.append("<p><strong>Quantité :</strong> ").append(orderVehicle.getQuantity()).append("</p>");
-            orderContent.append("<p><strong>Prix unitaire :</strong> ").append(orderVehicle.getVehicle().getPrice()).append(" FCFA</p>");
-            orderContent.append("<p><strong>Prix total :</strong> ").append(orderVehicle.getVehicle().getPrice() * orderVehicle.getQuantity()).append(" FCFA</p>");
+            orderContent.append("<p><strong>Prix unitaire :</strong> ").append(PRICE_FORMAT.format(orderVehicle.getVehicle().getPrice())).append(" FCFA</p>");
+            orderContent.append("<p><strong>Prix total :</strong> ").append(PRICE_FORMAT.format(orderVehicle.getVehicle().getPrice() * orderVehicle.getQuantity())).append(" FCFA</p>");
 
             // Ajout des options
             List<Option> options = order.getOptions();
             if (!options.isEmpty()) {
                 orderContent.append("<p><strong>Options :</strong> ");
-                orderContent.append(options.stream().map(Option::getName).collect(Collectors.joining(", ")));
+                orderContent.append(options.stream()
+                        .map(option -> option.getName() + " (" + PRICE_FORMAT.format(option.getPrice()) + " FCFA)")
+                        .collect(Collectors.joining(", ")));
                 orderContent.append("</p>");
             }
 
             orderContent.append("<hr>");
         }
 
-        orderContent.append("<p><strong>💰 Total :</strong> ").append(order.getTotalPrice()).append(" FCFA</p>");
+        orderContent.append("<p><strong>💰 Total :</strong> ").append(PRICE_FORMAT.format(order.getTotalPrice())).append(" FCFA</p>");
         orderContent.append("<hr>");
         orderContent.append("<p><strong>👤 Informations du Client</strong></p>");
         orderContent.append("<p><strong>Nom :</strong> ").append(clientName).append("</p>");
@@ -83,7 +85,7 @@ public class OrderDocumentBuilder implements DocumentBuilder {
 
         // 📌 **Demande d'immatriculation**
         Document immatriculationDoc = new Document();
-        immatriculationDoc.setTitle("Demande d'Immatriculation");
+        immatriculationDoc.setTitle("📄 Demande d'Immatriculation");
 
         StringBuilder immatriculationContent = new StringBuilder();
         immatriculationContent.append("<p><strong>🚗 Demande d'immatriculation</strong></p>");
@@ -100,7 +102,7 @@ public class OrderDocumentBuilder implements DocumentBuilder {
 
         // 📌 **Certificat de Cession**
         Document cessionDoc = new Document();
-        cessionDoc.setTitle("Certificat de Cession");
+        cessionDoc.setTitle("📄 Certificat de Cession");
 
         StringBuilder cessionContent = new StringBuilder();
         cessionContent.append("<p><strong>🚗 Certificat de vente</strong></p>");
@@ -111,11 +113,10 @@ public class OrderDocumentBuilder implements DocumentBuilder {
         }
         cessionContent.append("<p><strong>Vendeur :</strong> Entreprise XYZ</p>");
         cessionContent.append("<p><strong>Acheteur :</strong> ").append(clientName).append("</p>");
-        cessionContent.append("<p><strong>Prix Total :</strong> ").append(order.getTotalPrice()).append(" FCFA</p>");
+        cessionContent.append("<p><strong>Prix Total :</strong> ").append(PRICE_FORMAT.format(order.getTotalPrice())).append(" FCFA</p>");
         cessionContent.append("<p><strong>Date de génération :</strong> ").append(formattedDate).append("</p>");
 
         cessionDoc.setContent(cessionContent.toString());
         DocumentLiasseSingleton.getInstance().addDocument(cessionDoc);
-
     }
 }

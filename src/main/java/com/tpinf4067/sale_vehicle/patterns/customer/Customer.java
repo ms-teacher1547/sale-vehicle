@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tpinf4067.sale_vehicle.patterns.customer.enums.CustomerType;
 import com.tpinf4067.sale_vehicle.patterns.order.factory.Order;
 
@@ -26,8 +26,8 @@ public class Customer {
     private String email;
     private String address;
 
-        @OneToMany(mappedBy = "customer")
-    @JsonBackReference // ✅ Empêche la boucle infinie
+    @OneToMany(mappedBy = "customer")
+    @JsonManagedReference // Empeche la recursion infinie
     private List<Order> orders = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)

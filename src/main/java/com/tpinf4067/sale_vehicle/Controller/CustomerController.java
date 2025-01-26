@@ -39,7 +39,8 @@ public class CustomerController {
     // 📌 Ajouter une méthode pour créer un client
     @PostMapping("/")
     public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
-        return ResponseEntity.ok(customerService.createCustomer(customer));
+        Customer savedCustomer = customerService.createCustomer(customer);
+        return ResponseEntity.ok(savedCustomer);
     }
 
     // 📌 Ajouter une méthode pour mettre à jour un client
