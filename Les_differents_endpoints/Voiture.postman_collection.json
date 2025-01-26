@@ -1,0 +1,159 @@
+{
+	"info": {
+		"_postman_id": "6fe55d8b-8e62-4b8b-820b-71cfc141b9e9",
+		"name": "Voiture",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "39938539"
+	},
+	"item": [
+		{
+			"name": "Ajout d'un car",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MjMwMDEsImV4cCI6MTczNzQyNjYwMX0.xkSeJSb2f6YqgJkOji7D4pfDjQe4QWYGeW-HU_cE0ug"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Toyota Corolla\",\n  \"price\": 25000,\n  \"numberOfDoors\": 4,\n  \"hasStorageBox\": false,\n  \"animationUrl\": \"https://animation-url.com/toyota\",\n  \"stockQuantity\": 10,\n  \"yearOfManufacture\": 2022,\n  \"fuelType\": \"Essence\",\n  \"mileage\": 5000\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/api/catalog/vehicles/car"
+			},
+			"response": []
+		},
+		{
+			"name": "Ajout d'un scooter",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MjMwMDEsImV4cCI6MTczNzQyNjYwMX0.xkSeJSb2f6YqgJkOji7D4pfDjQe4QWYGeW-HU_cE0ug"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Toyota Corolla\",\n  \"price\": 25000,\n  \"numberOfDoors\": 4,\n  \"hasStorageBox\": false,\n  \"animationUrl\": \"https://animation-url.com/toyota\",\n  \"stockQuantity\": 10,\n  \"yearOfManufacture\": 2022,\n  \"fuelType\": \"Essence\",\n  \"mileage\": 5000\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/api/catalog/vehicles/car"
+			},
+			"response": []
+		},
+		{
+			"name": "Recuperer la liste de tous les vehicules",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0OTUxOTYsImV4cCI6MTczNzQ5ODc5Nn0.hA06DI0VHsffvpgybQ9mtDVQm7UMCM5LDCAhNk7ihsA"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8081/api/catalog/vehicles"
+			},
+			"response": []
+		},
+		{
+			"name": "Recuperer la liste de vehicule sous forme de lots de 3",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Recherche un vehicule",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Supprimer un véhicule (ADMIN)",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Avoir la liste de tous les vehicule",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Supprimer un vehicule",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8081/api/catalog/vehicles/2"
+			},
+			"response": []
+		},
+		{
+			"name": "Remise applique aux voitures anciens",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "stockQuantity=5&yearOfManufacture=2024&fuelType=Diesel&mileage=10000",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://localhost:8081/api/catalog/vehicles/discount"
+			},
+			"response": []
+		},
+		{
+			"name": "Mettre a jour l'animation d'un vehicule",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"http://example.com/animation.gif\"\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/api/catalog/vehicles/1/animation"
+			},
+			"response": []
+		},
+		{
+			"name": "Mettre a jour les details d'un vehicule",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}

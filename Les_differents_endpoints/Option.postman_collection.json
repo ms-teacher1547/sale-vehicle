@@ -1,0 +1,144 @@
+{
+	"info": {
+		"_postman_id": "9cce70d7-75c3-4100-a061-6aea89b752cc",
+		"name": "Option",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "39938539"
+	},
+	"item": [
+		{
+			"name": "Ajout d'une option",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MDkxODcsImV4cCI6MTczNzQxMjc4N30.oKGy7s0AHs1rC1l4F9uPmjwimkHcEOVAftQAzI1AQrQ"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Sièges en cuir\",\n  \"price\": 4000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/api/options/"
+			},
+			"response": []
+		},
+		{
+			"name": "Recuperer la liste de toute les options",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0ODk5NzIsImV4cCI6MTczNzQ5MzU3Mn0.52I2UVlHk4Y7zNH-bicBhrUmbIq-8l_3kxZr9hep89A"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8081/api/options/"
+			},
+			"response": []
+		},
+		{
+			"name": "Definir l'incompatibilite entre les differents options",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0ODk5NzIsImV4cCI6MTczNzQ5MzU3Mn0.52I2UVlHk4Y7zNH-bicBhrUmbIq-8l_3kxZr9hep89A"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"optionId1\": 1,\n  \"optionId2\": 2\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/api/options/incompatible"
+			},
+			"response": []
+		},
+		{
+			"name": "Ajout d'une option",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc1MzY5ODIsImV4cCI6MTczNzU0MDU4Mn0.Q5rnnVYmHoobB817QT9RmDKyLcHohRgfi16zjZCW6es"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Sièges en cuir\",\n  \"price\": 2000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/api/options/"
+			},
+			"response": []
+		},
+		{
+			"name": "Ajout d'une option",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc1MzY5ODIsImV4cCI6MTczNzU0MDU4Mn0.Q5rnnVYmHoobB817QT9RmDKyLcHohRgfi16zjZCW6es"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"GPS\",\n    \"price\": 5000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/api/options/"
+			},
+			"response": []
+		},
+		{
+			"name": "Supprimer une option (ADMIN)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8081/api/options/2"
+			},
+			"response": []
+		},
+		{
+			"name": "Verifier les incompatibilite de cette option",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}

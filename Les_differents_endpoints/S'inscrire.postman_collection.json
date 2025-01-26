@@ -1,0 +1,81 @@
+{
+	"info": {
+		"_postman_id": "2330747a-c14d-4cfa-a7ab-c64ce5ca8fe8",
+		"name": "S'inscrire",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "39938539"
+	},
+	"item": [
+		{
+			"name": "Register d'un ADMIN",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"msm\",\n  \"password\": \"password\",\n  \"role\": \"ADMIN\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/api/auth/register"
+			},
+			"response": []
+		},
+		{
+			"name": "Login d'un USER",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"msm\",\n  \"password\": \"password\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/api/auth/login"
+			},
+			"response": []
+		},
+		{
+			"name": "Login d'un ADMIN",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": "http://localhost:8081/api/auth/login"
+			},
+			"response": []
+		},
+		{
+			"name": "Verifier quel user est connecte",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Se deconnecter",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": "http://localhost:8081/api/auth/logout"
+			},
+			"response": []
+		},
+		{
+			"name": "Register d'un USER",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": "http://localhost:8081/api/auth/register"
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,42 @@
+{
+	"info": {
+		"_postman_id": "d2270bd9-5afe-43ae-83ea-c81dc0e64d0a",
+		"name": "Payment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "39938539"
+	},
+	"item": [
+		{
+			"name": "Ajout d'un paiement",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc1NDM3NDQsImV4cCI6MTczNzU0NzM0NH0.2XwVO_e7VmZe32x-avnmoC8S8WKRyyttW6G24gMkWBY"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"orderId\": 4,\n    \"paymentType\": \"CREDIT\",\n    \"country\": \"TCHAD\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/api/payments/"
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}

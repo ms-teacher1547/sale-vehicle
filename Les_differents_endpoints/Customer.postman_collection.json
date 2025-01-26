@@ -1,0 +1,191 @@
+{
+	"info": {
+		"_postman_id": "43d8f61a-b99d-4d9b-8141-ce2e06758fb9",
+		"name": "Customer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "39938539"
+	},
+	"item": [
+		{
+			"name": "Ajout d'un client en tant que INDIVIDUAL",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MDkxODcsImV4cCI6MTczNzQxMjc4N30.oKGy7s0AHs1rC1l4F9uPmjwimkHcEOVAftQAzI1AQrQ"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Mahamat Saleh Mahamat\",\n  \"email\": \"saleh.mahamat@example.com\",\n  \"address\": \"Ecole de de Poste\",\n  \"type\": \"INDIVIDUAL\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/api/customers/",
+				"description": "Ajout d'un client en tant que client simple"
+			},
+			"response": []
+		},
+		{
+			"name": "Ajout d'un client en tant que COMPANY",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MDkxODcsImV4cCI6MTczNzQxMjc4N30.oKGy7s0AHs1rC1l4F9uPmjwimkHcEOVAftQAzI1AQrQ"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Mahamat Saleh Mahamat\",\n  \"email\": \"saleh.mahamat@example.com\",\n  \"address\": \"Ecole de de Poste\",\n  \"type\": \"INDIVIDUAL\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/api/customers/",
+				"description": "Ajout d'un client entant que societe"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8081/api/customers/ Copy 2",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MDkxODcsImV4cCI6MTczNzQxMjc4N30.oKGy7s0AHs1rC1l4F9uPmjwimkHcEOVAftQAzI1AQrQ"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Mahamat Saleh Mahamat\",\n  \"email\": \"saleh.mahamat@example.com\",\n  \"address\": \"Ecole de de Poste\",\n  \"type\": \"INDIVIDUAL\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/api/customers/",
+				"description": "Ajout d'un client client en tantque societe filiale"
+			},
+			"response": []
+		},
+		{
+			"name": "Ajout d'un client en tant filiale d'une company",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MDkxODcsImV4cCI6MTczNzQxMjc4N30.oKGy7s0AHs1rC1l4F9uPmjwimkHcEOVAftQAzI1AQrQ"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Toyota France\",\n  \"email\": \"france@toyota.com\",\n  \"address\": \"Lyon\",\n  \"type\": \"COMPANY\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/api/customers/2/subsidiaries"
+			},
+			"response": []
+		},
+		{
+			"name": "Avoir la liste de tous les client",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Recuperer un client par ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8081/api/customers/1"
+			},
+			"response": []
+		},
+		{
+			"name": "Mettre a jour un client",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Supprimer un client",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Recherche des clients",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/customers/search?name=John&type=INDIVIDUAL",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"customers",
+						"search"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "John"
+						},
+						{
+							"key": "type",
+							"value": "INDIVIDUAL"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ajouter une filiale existante a une entreprise",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": "http://localhost:8081/api/customers/2/add-subsidiary/4"
+			},
+			"response": []
+		},
+		{
+			"name": "Recuperer les filiales d'une entreprise",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8081/api/customers/2/subsidiaries"
+			},
+			"response": []
+		}
+	]
+}

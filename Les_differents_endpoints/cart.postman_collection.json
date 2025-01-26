@@ -1,0 +1,67 @@
+{
+	"info": {
+		"_postman_id": "9e048f14-7d13-4c26-b4d2-55c1903fc2c6",
+		"name": "cart",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "39938539"
+	},
+	"item": [
+		{
+			"name": "Ajouter un vehicule dans le panier virtuel",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0ODk5NzIsImV4cCI6MTczNzQ5MzU3Mn0.52I2UVlHk4Y7zNH-bicBhrUmbIq-8l_3kxZr9hep89A"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customerId\": 1,\n  \"vehicleId\": 1,\n  \"options\": [ 1]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/api/cart/add"
+			},
+			"response": []
+		},
+		{
+			"name": "Recuperer un panier existant",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0ODk5NzIsImV4cCI6MTczNzQ5MzU3Mn0.52I2UVlHk4Y7zNH-bicBhrUmbIq-8l_3kxZr9hep89A"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8081/api/cart/1"
+			},
+			"response": []
+		},
+		{
+			"name": "Ajouter un vehicule au panier",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customerId\": 1,\n  \"vehicleId\": 2,\n  \"quantity\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/api/cart/1/remove/1"
+			},
+			"response": []
+		}
+	]
+}

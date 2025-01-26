@@ -1,5 +1,6 @@
 package com.tpinf4067.sale_vehicle.patterns.order.factory;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -112,7 +113,11 @@ public class Order {
 
         double optionsPrice = options.stream().mapToDouble(Option::getPrice).sum();
 
-        return vehiclesPrice + optionsPrice;
+        double totalPrice = vehiclesPrice + optionsPrice;
+
+        // 🔥 Formater pour éviter l'affichage en notation scientifique
+        DecimalFormat df = new DecimalFormat("#.##");
+        return Double.parseDouble(df.format(totalPrice));   
     }
 
     public String getStateString() {

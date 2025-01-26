@@ -1,5 +1,6 @@
 package com.tpinf4067.sale_vehicle.patterns.document;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -31,6 +32,9 @@ public class OrderDocumentBuilder implements DocumentBuilder {
         return this.document;
     }
 
+    // ✅ Ajoute un formateur global pour assurer un affichage correct
+    private static final DecimalFormat PRICE_FORMAT = new DecimalFormat("#,###.00");
+    
     public void constructOrderDocuments(Order order) {
         String clientName = order.getCustomer() != null ? order.getCustomer().getName() : "Client inconnu";
         String clientEmail = order.getCustomer() != null ? order.getCustomer().getEmail() : "Non fourni";
