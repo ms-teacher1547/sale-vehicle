@@ -49,6 +49,13 @@ public class CartController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/clear/{customerId}")
+    public ResponseEntity<String> clearCart(@PathVariable Long customerId) {
+        cartService.clearCart(customerId);
+        return ResponseEntity.ok("✅ Panier vidé avec succès !");
+    }
+
+
     // ✅ Classe interne pour structurer les données JSON envoyées
     public static class CartRequest {
         private Long customerId;

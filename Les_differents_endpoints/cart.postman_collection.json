@@ -46,7 +46,7 @@
 			"response": []
 		},
 		{
-			"name": "Supprimer un vehicule au panier",
+			"name": "Supprimer un article du panier",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -60,6 +60,15 @@
 					}
 				},
 				"url": "http://localhost:8081/api/cart/1/remove/1"
+			},
+			"response": []
+		},
+		{
+			"name": "Vider le panier",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8081/api/cart/clear/1"
 			},
 			"response": []
 		}
