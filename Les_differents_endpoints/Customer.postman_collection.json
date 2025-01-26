@@ -133,8 +133,9 @@
 		{
 			"name": "Supprimer un client",
 			"request": {
-				"method": "GET",
-				"header": []
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8081/api/customers/2"
 			},
 			"response": []
 		},

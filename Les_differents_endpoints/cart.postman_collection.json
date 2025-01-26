@@ -46,7 +46,7 @@
 			"response": []
 		},
 		{
-			"name": "Ajouter un vehicule au panier",
+			"name": "Supprimer un vehicule au panier",
 			"request": {
 				"method": "DELETE",
 				"header": [],

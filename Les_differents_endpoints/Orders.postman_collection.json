@@ -1,0 +1,78 @@
+{
+	"info": {
+		"_postman_id": "99a063e6-47e0-4f10-9aac-9149b0708756",
+		"name": "Orders",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "39938539"
+	},
+	"item": [
+		{
+			"name": "Passer une commande a partir du panier",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MzE5ODMsImV4cCI6MTczNzQzNTU4M30.a01bRETRh_bdjUEupkXuWsXGLGUeRrcqlRRfYtRe9wg"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/orders/?vehicleId=1&customerId=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"orders",
+						""
+					],
+					"query": [
+						{
+							"key": "vehicleId",
+							"value": "1"
+						},
+						{
+							"key": "customerId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Changer le statut d'une commande",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MzE5ODMsImV4cCI6MTczNzQzNTU4M30.a01bRETRh_bdjUEupkXuWsXGLGUeRrcqlRRfYtRe9wg"
+					}
+				},
+				"method": "PUT",
+				"header": [],
+				"url": "http://localhost:8081/api/orders/1/next"
+			},
+			"response": []
+		},
+		{
+			"name": "Verifier la liste des commandes",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Rechercher une commande par client et/ou etat",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}

@@ -88,8 +88,9 @@
 		{
 			"name": "Supprimer un véhicule (ADMIN)",
 			"request": {
-				"method": "GET",
-				"header": []
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8081/api/catalog/vehicles/1"
 			},
 			"response": []
 		},
@@ -98,15 +99,6 @@
 			"request": {
 				"method": "GET",
 				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "Supprimer un vehicule",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": "http://localhost:8081/api/catalog/vehicles/2"
 			},
 			"response": []
 		},

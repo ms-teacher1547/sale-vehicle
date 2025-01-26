@@ -31,10 +31,26 @@
 			"response": []
 		},
 		{
-			"name": "New Request",
+			"name": "Confirmer un paiement",
 			"request": {
-				"method": "GET",
-				"header": []
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTczNzU3MDkzOSwiZXhwIjoxNzM3NTc0NTM5fQ._6_f8pTQmYJV8FBKF1g9xGx5IoyakvmNTqiqoq3vR5o"
+					}
+				},
+				"method": "PUT",
+				"header": [],
+				"url": "http://localhost:8081/api/payments/1/confirm"
+			},
+			"response": []
+		},
+		{
+			"name": "Rejeter un paiement",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": "http://localhost:8081/api/payments/2/confirm"
 			},
 			"response": []
 		}
