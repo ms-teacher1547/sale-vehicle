@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.tpinf4067.sale_vehicle.domain.Option;
-import com.tpinf4067.sale_vehicle.domain.Vehicle;
-import com.tpinf4067.sale_vehicle.patterns.order.Order;
+import com.tpinf4067.sale_vehicle.patterns.order.factory.Order;
+import com.tpinf4067.sale_vehicle.patterns.order.factory.OrderVehicle;
 
 public class OrderDocumentBuilder implements DocumentBuilder {
     private Document document;
@@ -42,15 +42,17 @@ public class OrderDocumentBuilder implements DocumentBuilder {
 
         // 📌 **Bon de commande**
         Document orderDoc = new Document();
-        orderDoc.setTitle("📄 Bon de Commande");
+        orderDoc.setTitle("Bon de Commande");
 
         StringBuilder orderContent = new StringBuilder();
         orderContent.append("<p><strong>🛒 Détails de la commande</strong></p>");
         orderContent.append("<hr>");
 
-        for (Vehicle vehicle : order.getVehicles()) {
-            orderContent.append("<p><strong>Véhicule :</strong> ").append(vehicle.getName()).append("</p>");
-            orderContent.append("<p><strong>Prix :</strong> ").append(vehicle.getPrice()).append(" FCFA</p>");
+        for (OrderVehicle orderVehicle : order.getOrderVehicles()) {
+            orderContent.append("<p><strong>Véhicule :</strong> ").append(orderVehicle.getVehicle().getName()).append("</p>");
+            orderContent.append("<p><strong>Quantité :</strong> ").append(orderVehicle.getQuantity()).append("</p>");
+            orderContent.append("<p><strong>Prix unitaire :</strong> ").append(orderVehicle.getVehicle().getPrice()).append(" FCFA</p>");
+            orderContent.append("<p><strong>Prix total :</strong> ").append(orderVehicle.getVehicle().getPrice() * orderVehicle.getQuantity()).append(" FCFA</p>");
 
             // Ajout des options
             List<Option> options = order.getOptions();
@@ -77,13 +79,14 @@ public class OrderDocumentBuilder implements DocumentBuilder {
 
         // 📌 **Demande d'immatriculation**
         Document immatriculationDoc = new Document();
-        immatriculationDoc.setTitle("📄 Demande d'Immatriculation");
+        immatriculationDoc.setTitle("Demande d'Immatriculation");
 
         StringBuilder immatriculationContent = new StringBuilder();
         immatriculationContent.append("<p><strong>🚗 Demande d'immatriculation</strong></p>");
         immatriculationContent.append("<hr>");
-        for (Vehicle vehicle : order.getVehicles()) {
-            immatriculationContent.append("<p><strong>Véhicule :</strong> ").append(vehicle.getName()).append("</p>");
+        for (OrderVehicle orderVehicle : order.getOrderVehicles()) {
+            immatriculationContent.append("<p><strong>Véhicule :</strong> ").append(orderVehicle.getVehicle().getName()).append("</p>");
+            immatriculationContent.append("<p><strong>Quantité :</strong> ").append(orderVehicle.getQuantity()).append("</p>");
         }
         immatriculationContent.append("<p><strong>Client :</strong> ").append(clientName).append("</p>");
         immatriculationContent.append("<p><strong>Date :</strong> ").append(formattedDate).append("</p>");
@@ -93,20 +96,22 @@ public class OrderDocumentBuilder implements DocumentBuilder {
 
         // 📌 **Certificat de Cession**
         Document cessionDoc = new Document();
-        cessionDoc.setTitle("📄 Certificat de Cession");
+        cessionDoc.setTitle("Certificat de Cession");
 
         StringBuilder cessionContent = new StringBuilder();
         cessionContent.append("<p><strong>🚗 Certificat de vente</strong></p>");
         cessionContent.append("<hr>");
-        for (Vehicle vehicle : order.getVehicles()) {
-            cessionContent.append("<p><strong>Véhicule :</strong> ").append(vehicle.getName()).append("</p>");
+        for (OrderVehicle orderVehicle : order.getOrderVehicles()) {
+            cessionContent.append("<p><strong>Véhicule :</strong> ").append(orderVehicle.getVehicle().getName()).append("</p>");
+            cessionContent.append("<p><strong>Quantité :</strong> ").append(orderVehicle.getQuantity()).append("</p>");
         }
         cessionContent.append("<p><strong>Vendeur :</strong> Entreprise XYZ</p>");
         cessionContent.append("<p><strong>Acheteur :</strong> ").append(clientName).append("</p>");
-        cessionContent.append("<p><strong>Prix :</strong> ").append(order.getTotalPrice()).append(" FCFA</p>");
+        cessionContent.append("<p><strong>Prix Total :</strong> ").append(order.getTotalPrice()).append(" FCFA</p>");
         cessionContent.append("<p><strong>Date de génération :</strong> ").append(formattedDate).append("</p>");
 
         cessionDoc.setContent(cessionContent.toString());
         DocumentLiasseSingleton.getInstance().addDocument(cessionDoc);
+
     }
 }

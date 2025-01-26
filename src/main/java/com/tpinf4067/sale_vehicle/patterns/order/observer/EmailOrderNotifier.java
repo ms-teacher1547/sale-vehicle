@@ -1,7 +1,5 @@
 package com.tpinf4067.sale_vehicle.patterns.order.observer;
 
-import com.tpinf4067.sale_vehicle.repository.OrderObserver;
-
 public class EmailOrderNotifier implements OrderObserver {
     private String email;
 

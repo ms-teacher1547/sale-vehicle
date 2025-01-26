@@ -1,8 +1,14 @@
 package com.tpinf4067.sale_vehicle.patterns.order.factory;
 
 import com.tpinf4067.sale_vehicle.domain.Cart;
-import com.tpinf4067.sale_vehicle.patterns.order.Order;
+import com.tpinf4067.sale_vehicle.patterns.order.state.PendingState;
+import com.tpinf4067.sale_vehicle.patterns.payment.PaymentType;
 
 public interface OrderFactory {
-    Order createOrder(Cart cart);
+    default Order createOrder(Cart cart, PaymentType paymentType) {
+        Order order = new Order();
+        order.setState(new PendingState()); // ✅ Initialisation correcte du State Pattern
+        order.setPaymentType(paymentType);
+        return order;
+    }
 }

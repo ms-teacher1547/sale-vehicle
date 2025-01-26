@@ -4,15 +4,15 @@ import com.tpinf4067.sale_vehicle.domain.Cart;
 import com.tpinf4067.sale_vehicle.domain.CartItem;
 import com.tpinf4067.sale_vehicle.domain.Vehicle;
 import com.tpinf4067.sale_vehicle.patterns.document.*;
-import com.tpinf4067.sale_vehicle.patterns.order.Order;
+import com.tpinf4067.sale_vehicle.patterns.order.factory.*;
+import com.tpinf4067.sale_vehicle.patterns.order.state.*;
+import com.tpinf4067.sale_vehicle.patterns.payment.PaymentType;
 import com.tpinf4067.sale_vehicle.patterns.order.observer.EmailOrderNotifier;
 import com.tpinf4067.sale_vehicle.patterns.order.observer.OrderNotifier;
 import com.tpinf4067.sale_vehicle.repository.CustomerRepository;
 import com.tpinf4067.sale_vehicle.repository.OrderRepository;
 import com.tpinf4067.sale_vehicle.repository.VehicleRepository;
-
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
 import java.util.List;
 
@@ -34,44 +34,49 @@ public class OrderService {
         this.cartService = cartService;
     }
 
-    // ✅ Création d'une commande depuis le panier
-    public Order createOrderFromCart(Long customerId) {
+    // ✅ Création d'une commande depuis le panier avec Factory Method
+    // ✅ Mise à jour pour ajouter la quantité de véhicules à la commande
+    public Order createOrderFromCart(Long customerId, String paymentTypeStr) {
         Cart cart = cartService.getCartForCustomer(customerId);
 
         if (cart.getItems().isEmpty()) {
             throw new IllegalStateException("Le panier est vide, impossible de passer une commande !");
         }
 
-        Order order = new Order();
+        // Vérification du type de paiement
+        PaymentType paymentType;
+        try {
+            paymentType = PaymentType.valueOf(paymentTypeStr.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Type de paiement invalide : " + paymentTypeStr);
+        } 
+
+        // Factory Method pour créer la commande
+        OrderFactory orderFactory = (paymentType == PaymentType.COMPTANT) ? 
+                                    new ComptantOrderFactory() : 
+                                    new CreditOrderFactory();
+
+        Order order = orderFactory.createOrder(cart, paymentType);
         order.setCustomer(cart.getCustomer());
-        order.setState("EN_COURS");
+        order.setState(new PendingState());
         order.setDateDeCommande(new Date());
 
-        // Ajout des véhicules et options de chaque élément du panier
         for (CartItem item : cart.getItems()) {
-            order.addVehicleWithOptions(item.getVehicle(), item.getOptions());
+            order.addVehicleWithOptions(item.getVehicle(), item.getOptions(), item.getQuantity());
 
-            // 🔥 Vérifier le stock et le mettre à jour
             Vehicle vehicle = item.getVehicle();
-            if (vehicle.getStockQuantity() <= 0) {
-                throw new IllegalStateException("Le véhicule " + vehicle.getName() + " est en rupture de stock !");
+            if (vehicle.getStockQuantity() < item.getQuantity()) {
+                throw new IllegalStateException("Le véhicule " + vehicle.getName() + " n'a pas assez de stock !");
             }
-            vehicle.setStockQuantity(vehicle.getStockQuantity() - 1);
+            vehicle.setStockQuantity(vehicle.getStockQuantity() - item.getQuantity());
             vehicleRepository.save(vehicle);
         }
 
         Order savedOrder = orderRepository.save(order);
-
-        // ✅ Vider le panier après la commande
         cartService.clearCart(customerId);
-
-        // ✅ Générer les documents
         generateOrderDocuments(savedOrder);
-
-        // ✅ Notifier le client
         orderNotifier.addObserver(new EmailOrderNotifier(cart.getCustomer().getEmail()));
         orderNotifier.notifyObservers("Votre commande a été créée avec succès !");
-
         return savedOrder;
     }
 
@@ -79,48 +84,53 @@ public class OrderService {
     public void generateOrderDocuments(Order order) {
         OrderDocumentBuilder builder = new OrderDocumentBuilder();
         builder.constructOrderDocuments(order);
-        
-        // ✅ Exporter chaque document en PDF
         DocumentLiasseSingleton.getInstance().getDocuments().forEach(pdfAdapter::export);
     }
+
+    // ✅ Changer l'état d'une commande avec State Pattern
+    public Order changeOrderStatus(Long orderId, boolean next) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Commande non trouvée"));
+    
+        if (next) {
+            order.nextState();
+        } else {
+            order.previousState();
+        }
+    
+        orderRepository.save(order); // 🔥 Enregistrer la mise à jour en base
+    
+        orderNotifier.notifyObservers("Votre commande est maintenant : " + order.getState().getStatus());
+    
+        return order;
+    }
+    
+
 
     // ✅ Récupérer toutes les commandes
     public List<Order> getAllOrders() {
         return orderRepository.findAll();
     }
 
-    // ✅ Changer l'état d'une commande avec notification
-    public Order changeOrderStatus(Long orderId, boolean next) {
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("Commande non trouvée"));
-
-        if (next) {
-            order.nextState();
-        } else {
-            order.previousState();
-        }
-
-        orderRepository.save(order);
-
-        // 🔥 Notification du client
-        orderNotifier.notifyObservers("Votre commande est maintenant : " + order.getState());
-
-        return order;
-    }
-
+    // ✅ Rechercher des commandes par client et/ou état
     public List<Order> searchOrders(Long customerId, String state) {
-        if (customerId != null && state != null) {
-            return orderRepository.findByCustomerId(customerId)
-                    .stream()
-                    .filter(o -> o.getState().equalsIgnoreCase(state))
-                    .toList();
-        } else if (customerId != null) {
-            return orderRepository.findByCustomerId(customerId);
-        } else if (state != null) {
-            return orderRepository.findByStateIgnoreCase(state);
+        List<Order> orders;
+        
+        if (customerId != null) {
+            orders = orderRepository.findByCustomerId(customerId);
         } else {
-            return orderRepository.findAll();
+            orders = orderRepository.findAll();
         }
+    
+        // 🔥 Filtrage manuel sur l'état car `state` est @Transient et non en base de données
+        if (state != null) {
+            orders = orders.stream()
+                    .filter(o -> o.getState().getStatus().equalsIgnoreCase(state))
+                    .toList();
+        }
+    
+        return orders;
     }
     
+
 }

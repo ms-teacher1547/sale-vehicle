@@ -3,9 +3,12 @@ package com.tpinf4067.sale_vehicle.patterns.customer;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.tpinf4067.sale_vehicle.patterns.customer.enums.CustomerType;
+import com.tpinf4067.sale_vehicle.patterns.order.factory.Order;
 
 @Entity
 @Getter
@@ -22,6 +25,10 @@ public class Customer {
     private String name;
     private String email;
     private String address;
+
+        @OneToMany(mappedBy = "customer")
+    @JsonBackReference // ✅ Empêche la boucle infinie
+    private List<Order> orders = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private CustomerType type;

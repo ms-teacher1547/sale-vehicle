@@ -186,5 +186,8 @@ public class VehicleService {
         }).orElse(null);
     }
     
+    public List<Vehicle> getAllAvailableVehicles() {
+        return vehicleRepository.findAvailableVehicles();
+    }    
 
 }

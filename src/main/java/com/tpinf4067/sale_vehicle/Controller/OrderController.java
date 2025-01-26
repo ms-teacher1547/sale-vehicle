@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.tpinf4067.sale_vehicle.patterns.document.Document;
 import com.tpinf4067.sale_vehicle.patterns.document.DocumentLiasseSingleton;
-import com.tpinf4067.sale_vehicle.patterns.order.Order;
+import com.tpinf4067.sale_vehicle.patterns.order.factory.Order;
+import com.tpinf4067.sale_vehicle.patterns.order.factory.OrderRequest;
 import com.tpinf4067.sale_vehicle.service.OrderService;
 
 import java.nio.file.Path;
@@ -27,12 +28,15 @@ public class OrderController {
     }
 
     // ✅ Création d'une commande à partir du panier
+    // ✅ Correction : Ajout du paramètre paymentType
     @PostMapping("/")
-    public ResponseEntity<String> createOrder(@RequestParam Long customerId) {
-        Order order = orderService.createOrderFromCart(customerId);
+    public ResponseEntity<String> createOrder(@RequestBody OrderRequest request) {
+        Order order = orderService.createOrderFromCart(request.getCustomerId(), request.getPaymentType());
         return order != null ? ResponseEntity.ok("✅ Commande créée avec succès.") :
                 ResponseEntity.badRequest().body("❌ Impossible de créer la commande.");
     }
+    
+
 
     // ✅ Récupération de toutes les commandes
     @GetMapping("/")

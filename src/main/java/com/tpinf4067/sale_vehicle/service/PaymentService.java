@@ -1,9 +1,9 @@
 package com.tpinf4067.sale_vehicle.service;
 
-import com.tpinf4067.sale_vehicle.patterns.order.Order;
 import com.tpinf4067.sale_vehicle.patterns.payment.*;
 import com.tpinf4067.sale_vehicle.repository.OrderRepository;
 import com.tpinf4067.sale_vehicle.patterns.document.*;
+import com.tpinf4067.sale_vehicle.patterns.order.factory.Order;
 
 import org.springframework.stereotype.Service;
 

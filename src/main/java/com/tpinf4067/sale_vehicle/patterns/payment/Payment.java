@@ -1,6 +1,7 @@
 package com.tpinf4067.sale_vehicle.patterns.payment;
 
-import com.tpinf4067.sale_vehicle.patterns.order.Order;
+import com.tpinf4067.sale_vehicle.patterns.order.factory.Order;
+
 import jakarta.persistence.*;
 import lombok.*;
 
