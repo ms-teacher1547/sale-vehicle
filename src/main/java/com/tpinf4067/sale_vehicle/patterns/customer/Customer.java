@@ -54,13 +54,6 @@ public class Customer {
         this.user = user;
     }
 
-    // ✅ Ajout d'une méthode pour ajouter une filiale
-    // public void addSubsidiary(Customer subsidiary) {
-    //     if (this.type != CustomerType.COMPANY) {
-    //         throw new IllegalStateException("Seuls les clients de type COMPANY peuvent avoir des filiales.");
-    //     }
-    //     this.subsidiaries.add(subsidiary);
-    // }
     // ✅ Ajout d'un constructeur prenant uniquement l'ID
     public Customer(Long id) {
         this.id = id;
