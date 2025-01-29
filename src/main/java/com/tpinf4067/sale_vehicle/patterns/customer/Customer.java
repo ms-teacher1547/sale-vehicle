@@ -6,7 +6,9 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.tpinf4067.sale_vehicle.patterns.auth.User;
 import com.tpinf4067.sale_vehicle.patterns.customer.enums.CustomerType;
 import com.tpinf4067.sale_vehicle.patterns.order.factory.Order;
 
@@ -27,7 +29,7 @@ public class Customer {
     private String address;
 
     @OneToMany(mappedBy = "customer")
-    @JsonManagedReference // Empeche la recursion infinie
+    @JsonManagedReference // Empêche la récursion infinie
     private List<Order> orders = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
@@ -36,20 +38,32 @@ public class Customer {
     // 📌 Ajout pour gérer les filiales (Composite Pattern)
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "parent_company_id")
-    private List<Customer> subsidiaries;
+    private List<Customer> subsidiaries = new ArrayList<>();
 
-    // ✅ Ajout d'un constructeur avec uniquement l'ID
+    @OneToOne
+    @JoinColumn(name = "user_id", unique = true)
+    @JsonBackReference // 🔥 Evite la boucle infinie dans la sérialisation JSON
+    private User user;
+
+    // ✅ Ajout d'un constructeur avec un User
+    public Customer(String name, String email, String address, CustomerType type, User user) {
+        this.name = name;
+        this.email = email;
+        this.address = address;
+        this.type = type;
+        this.user = user;
+    }
+
+    // ✅ Ajout d'une méthode pour ajouter une filiale
+    // public void addSubsidiary(Customer subsidiary) {
+    //     if (this.type != CustomerType.COMPANY) {
+    //         throw new IllegalStateException("Seuls les clients de type COMPANY peuvent avoir des filiales.");
+    //     }
+    //     this.subsidiaries.add(subsidiary);
+    // }
+    // ✅ Ajout d'un constructeur prenant uniquement l'ID
     public Customer(Long id) {
         this.id = id;
     }
 
-    // ✅ Ajout d'un constructeur avec uniquement le nom
-    public void addSubsidiary(Customer subsidiary) {
-        if (this.type != CustomerType.COMPANY) {
-            throw new IllegalStateException("Seuls les clients de type COMPANY peuvent avoir des filiales.");
-        }
-        this.subsidiaries.add(subsidiary);
-    }
-   
-    
 }

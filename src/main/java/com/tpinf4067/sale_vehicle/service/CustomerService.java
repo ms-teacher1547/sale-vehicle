@@ -1,52 +1,73 @@
 package com.tpinf4067.sale_vehicle.service;
 
 import org.springframework.stereotype.Service;
-
+import com.tpinf4067.sale_vehicle.patterns.auth.User;
 import com.tpinf4067.sale_vehicle.patterns.customer.Customer;
 import com.tpinf4067.sale_vehicle.patterns.customer.enums.CustomerType;
 import com.tpinf4067.sale_vehicle.repository.CustomerRepository;
+import com.tpinf4067.sale_vehicle.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CustomerService {
-    // ✅ Ajout du repository
-    private final CustomerRepository customerRepository;
 
-    // ✅ Ajout du constructeur
-    public CustomerService(CustomerRepository customerRepository) {
+    private final CustomerRepository customerRepository;
+    private final UserRepository userRepository;
+
+    public CustomerService(CustomerRepository customerRepository, UserRepository userRepository) {
         this.customerRepository = customerRepository;
+        this.userRepository = userRepository;
     }
 
-    // ✅ Ajout de la méthode de recherche
+    // ✅ Récupérer tous les clients
     public List<Customer> getAllCustomers() {
         return customerRepository.findAll();
     }
 
-    // ✅ Ajout de la méthode de recherche par ID
+    // ✅ Récupérer un client par ID
     public Optional<Customer> getCustomerById(Long id) {
         return customerRepository.findById(id);
     }
 
-    // // ✅ Ajout de la méthode de création
-    // public Customer createCustomer(Customer customer) {
-    //     return customerRepository.save(customer);
-    // }
+    // ✅ Créer un client et l'associer à un utilisateur
+    public Customer createCustomerForUser(Customer customer, User user) {
+        // Vérifier si un client avec cet utilisateur existe déjà
+        Optional<Customer> existingCustomer = customerRepository.findByEmail(user.getEmail());
+        if (existingCustomer.isPresent()) {
+            throw new IllegalStateException("Un client existe déjà pour cet utilisateur.");
+        }
+    
+        // Associer l'utilisateur au client avec les bonnes données
+        customer.setEmail(user.getEmail()); // ✅ Transférer l'email de l'utilisateur
+        customer.setName(user.getFullname()); // ✅ Transférer le nom complet
+        customer.setAddress(customer.getAddress()); // ✅ Conserver l'adresse fournie dans la requête
+        customer.setType(customer.getType()); // ✅ Conserver le type fourni dans la requête
+        customer.setUser(user); // ✅ Associer correctement le User au Customer
+    
+        // Enregistrer le client
+        Customer savedCustomer = customerRepository.save(customer);
+    
+        // Associer le client à l'utilisateur
+        user.setCustomer(savedCustomer);
+        userRepository.save(user);
+        return savedCustomer;
+    }
 
-    // ✅ Ajout de la méthode de mise à jour
+    // ✅ Mettre à jour un client
     public Customer updateCustomer(Long id, Customer updatedCustomer) {
         return customerRepository.findById(id).map(customer -> {
             customer.setName(updatedCustomer.getName());
             customer.setEmail(updatedCustomer.getEmail());
             customer.setAddress(updatedCustomer.getAddress());
             customer.setType(updatedCustomer.getType());
-            customer.setSubsidiaries(updatedCustomer.getSubsidiaries()); // 📌 Mise à jour des filiales
+            customer.setSubsidiaries(updatedCustomer.getSubsidiaries());
             return customerRepository.save(customer);
         }).orElse(null);
     }
 
-    // ✅ Ajout de la méthode de suppression
+    // ✅ Supprimer un client
     public boolean deleteCustomer(Long id) {
         if (customerRepository.existsById(id)) {
             customerRepository.deleteById(id);
@@ -54,62 +75,36 @@ public class CustomerService {
         }
         return false;
     }
-    
-    // ✅ Ajout de la méthode de recherche
-    public List<Customer> searchCustomers(String name, CustomerType type) {
-        if (name != null && type != null) {
-            return customerRepository.findByNameContainingIgnoreCase(name)
-                    .stream()
-                    .filter(c -> c.getType().equals(type))
-                    .toList();
-        } else if (name != null) {
-            return customerRepository.findByNameContainingIgnoreCase(name);
-        } else if (type != null) {
-            return customerRepository.findByType(type);
-        } else {
-            return customerRepository.findAll();
-        }
+
+    // ✅ **Récupérer un client par email**
+    public Customer getCustomerByEmail(String email) {
+        return customerRepository.findByEmail(email).orElse(null);
     }
 
-    // ✅ Ajout de la méthode pour ajouter des filiales
-    public Customer addSubsidiary(Long companyId, Long subsidiaryId) {
-        Customer company = customerRepository.findById(companyId).orElse(null);
-        Customer subsidiary = customerRepository.findById(subsidiaryId).orElse(null);
-    
-        if (company == null || subsidiary == null) {
-            return null; // L'un des deux clients n'existe pas
-        }
-    
-        if (company.getType() != CustomerType.COMPANY) {
-            throw new IllegalStateException("Seuls les clients de type COMPANY peuvent avoir des filiales.");
-        }
-    
-        if (subsidiary.getType() != CustomerType.COMPANY) {
-            throw new IllegalStateException("Seuls les clients de type COMPANY peuvent être des filiales.");
-        }
-    
-        company.getSubsidiaries().add(subsidiary);
-        return customerRepository.save(company);
-    }
-
-    // ✅ Ajout de la méthode pour récupérer les filiales
     public List<Customer> getSubsidiaries(Long companyId) {
         Customer company = customerRepository.findById(companyId).orElse(null);
         if (company == null || company.getType() != CustomerType.COMPANY) {
-            return null; // Le client n'existe pas ou n'est pas une entreprise
+            return null;
         }
         return company.getSubsidiaries();
     }
+
+    public Customer addSubsidiary(Long companyId, Customer subsidiary, User currentUser) {
+        // 🔥 Vérifier que la COMPANY existe
+        Customer company = customerRepository.findById(companyId).orElse(null);
+        if (company == null || company.getType() != CustomerType.COMPANY) {
+            throw new IllegalStateException("❌ Seuls les clients de type COMPANY peuvent avoir des filiales.");
+        }
     
-    public Customer createCustomer(Customer customer) {
-        if (customer.getType() == CustomerType.INDIVIDUAL && 
-            customer.getSubsidiaries() != null && !customer.getSubsidiaries().isEmpty()) {
-            throw new IllegalStateException("Un client INDIVIDUAL ne peut pas avoir de filiales.");
+        // 🔥 Vérifier que l'utilisateur actuel est bien propriétaire de l'entreprise
+        if (!company.getUser().getId().equals(currentUser.getId())) {
+            throw new IllegalStateException("🚫 Vous ne pouvez pas ajouter une filiale à une entreprise qui ne vous appartient pas !");
         }
-        if (customer.getType() == CustomerType.COMPANY && 
-            (customer.getName() == null || customer.getAddress() == null)) {
-            throw new IllegalStateException("Une société doit avoir un nom et une adresse.");
-        }
-        return customerRepository.save(customer);
+    
+        // ✅ Ajouter la filiale
+        subsidiary.setType(CustomerType.COMPANY);
+        company.getSubsidiaries().add(subsidiary);
+        return customerRepository.save(company);
     }
+    
 }

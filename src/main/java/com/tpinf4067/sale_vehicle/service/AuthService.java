@@ -21,7 +21,7 @@ public class AuthService {
     }
 
     public String authenticate(String username, String password) {
-        Optional<User> userOptional = userRepository.findByUsername(username);
+        Optional<User> userOptional = userRepository.findByUsernameWithCustomer(username);
     
         if (userOptional.isEmpty()) {
             return null; // Aucun utilisateur trouvé

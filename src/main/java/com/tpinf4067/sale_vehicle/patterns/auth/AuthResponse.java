@@ -1,10 +1,10 @@
-package com.tpinf4067.sale_vehicle.patterns.auth;
+// package com.tpinf4067.sale_vehicle.patterns.auth;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+// import lombok.AllArgsConstructor;
+// import lombok.Getter;
 
-@Getter
-@AllArgsConstructor
-public class AuthResponse {
-    private String token;
-}
+// @Getter
+// @AllArgsConstructor
+// public class AuthResponse {
+//     private String token;
+// }
