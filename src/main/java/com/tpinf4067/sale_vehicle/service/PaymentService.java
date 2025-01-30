@@ -1,12 +1,12 @@
 package com.tpinf4067.sale_vehicle.service;
 
 import com.tpinf4067.sale_vehicle.patterns.payment.*;
+import com.tpinf4067.sale_vehicle.patterns.payment.template.TaxTemplate;
+import com.tpinf4067.sale_vehicle.patterns.payment.template.TaxTemplateFactory;
 import com.tpinf4067.sale_vehicle.repository.OrderRepository;
 import com.tpinf4067.sale_vehicle.repository.PaymentRepository;
 import com.tpinf4067.sale_vehicle.patterns.document.*;
 import com.tpinf4067.sale_vehicle.patterns.order.factory.Order;
-import com.tpinf4067.sale_vehicle.patterns.payment.strategy.TaxStrategy;
-import com.tpinf4067.sale_vehicle.patterns.payment.strategy.TaxStrategyFactory;
 import com.tpinf4067.sale_vehicle.patterns.auth.User;
 
 import org.springframework.stereotype.Service;
@@ -46,7 +46,7 @@ public class PaymentService {
         Order order = getLastUnpaidOrder(user.getCustomer().getId());
 
         // 🔥 Utilisation du Pattern Strategy pour le calcul des taxes
-        TaxStrategy taxStrategy = TaxStrategyFactory.getTaxStrategy(country);
+        TaxTemplate taxStrategy = TaxTemplateFactory.getTaxStrategy(country);
         double taxes = taxStrategy.calculateTax(order.getTotalPrice());
         double totalAmount = order.getTotalPrice() + taxes;
 
