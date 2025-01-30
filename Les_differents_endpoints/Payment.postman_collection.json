@@ -14,7 +14,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc1NDM3NDQsImV4cCI6MTczNzU0NzM0NH0.2XwVO_e7VmZe32x-avnmoC8S8WKRyyttW6G24gMkWBY",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3Mzc1NzU0ODcsImV4cCI6MTczNzU3OTA4N30.AahexGQsRvThtJErr8ZqKdM0MI12wwRqSDKxVQAB564",
 							"type": "string"
 						}
 					]
@@ -23,7 +23,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"orderId\": 4,\n    \"paymentType\": \"CREDIT\",\n    \"country\": \"TCHAD\"\n}",
+					"raw": "{\n  \"paymentType\": \"CREDIT\",\n  \"country\": \"SENEGAL\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -84,7 +84,7 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8081/api/payments/2/confirm",
+					"raw": "http://localhost:8081/api/payments/1/confirm",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -93,7 +93,7 @@
 					"path": [
 						"api",
 						"payments",
-						"2",
+						"1",
 						"confirm"
 					]
 				}

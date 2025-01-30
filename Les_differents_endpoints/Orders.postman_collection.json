@@ -14,15 +14,24 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MzE5ODMsImV4cCI6MTczNzQzNTU4M30.a01bRETRh_bdjUEupkXuWsXGLGUeRrcqlRRfYtRe9wg",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3Mzc1NzQxODEsImV4cCI6MTczNzU3Nzc4MX0.Re5BvSpe1gYJ9HbOLyoCb8_gwRRkbK867n7Zuv5fpXQ",
 							"type": "string"
 						}
 					]
 				},
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"paymentType\": \"CREDIT\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://localhost:8081/api/orders/?vehicleId=1&customerId=1",
+					"raw": "http://localhost:8081/api/orders/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -32,16 +41,6 @@
 						"api",
 						"orders",
 						""
-					],
-					"query": [
-						{
-							"key": "vehicleId",
-							"value": "1"
-						},
-						{
-							"key": "customerId",
-							"value": "1"
-						}
 					]
 				}
 			},
@@ -55,7 +54,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MzE5ODMsImV4cCI6MTczNzQzNTU4M30.a01bRETRh_bdjUEupkXuWsXGLGUeRrcqlRRfYtRe9wg",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtcyIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTczNzU1MTA2NiwiZXhwIjoxNzM3NTU0NjY2fQ.igKWOWKhu3z5wU5WiDjJhK6ocj6G0WXDrni40Mj9NSQ",
 							"type": "string"
 						}
 					]
@@ -63,7 +62,7 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8081/api/orders/1/next",
+					"raw": "http://localhost:8081/api/orders/status?next=true",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -72,8 +71,13 @@
 					"path": [
 						"api",
 						"orders",
-						"1",
-						"next"
+						"status"
+					],
+					"query": [
+						{
+							"key": "next",
+							"value": "true"
+						}
 					]
 				}
 			},
@@ -82,16 +86,80 @@
 		{
 			"name": "Verifier la liste des commandes",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3Mzc1NzQ5MTIsImV4cCI6MTczNzU3ODUxMn0.nZs6kgISWsCzpccmvS2EJaw4izYwQy738RUjnjozKqw",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/orders/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"orders",
+						""
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Rechercher une commande par client et/ou etat",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtcyIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTczNzU1MTA2NiwiZXhwIjoxNzM3NTU0NjY2fQ.igKWOWKhu3z5wU5WiDjJhK6ocj6G0WXDrni40Mj9NSQ",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
-				"header": []
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/orders/search?customerId=3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"orders",
+						"search"
+					],
+					"query": [
+						{
+							"key": "customerId",
+							"value": "3"
+						}
+					]
+				}
 			},
 			"response": []
 		}

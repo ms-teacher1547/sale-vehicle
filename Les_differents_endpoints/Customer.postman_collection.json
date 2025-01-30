@@ -7,174 +7,33 @@
 	},
 	"item": [
 		{
-			"name": "Ajout d'un client en tant que INDIVIDUAL",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MDkxODcsImV4cCI6MTczNzQxMjc4N30.oKGy7s0AHs1rC1l4F9uPmjwimkHcEOVAftQAzI1AQrQ",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"name\": \"Mahamat Saleh Mahamat\",\n  \"email\": \"saleh.mahamat@example.com\",\n  \"address\": \"Ecole de de Poste\",\n  \"type\": \"INDIVIDUAL\"\n}\n",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8081/api/customers/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8081",
-					"path": [
-						"api",
-						"customers",
-						""
-					]
-				},
-				"description": "Ajout d'un client en tant que client simple"
-			},
-			"response": []
-		},
-		{
-			"name": "Ajout d'un client en tant que COMPANY",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MDkxODcsImV4cCI6MTczNzQxMjc4N30.oKGy7s0AHs1rC1l4F9uPmjwimkHcEOVAftQAzI1AQrQ",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"name\": \"Mahamat Saleh Mahamat\",\n  \"email\": \"saleh.mahamat@example.com\",\n  \"address\": \"Ecole de de Poste\",\n  \"type\": \"INDIVIDUAL\"\n}\n",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8081/api/customers/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8081",
-					"path": [
-						"api",
-						"customers",
-						""
-					]
-				},
-				"description": "Ajout d'un client entant que societe"
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:8081/api/customers/ Copy 2",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MDkxODcsImV4cCI6MTczNzQxMjc4N30.oKGy7s0AHs1rC1l4F9uPmjwimkHcEOVAftQAzI1AQrQ",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"name\": \"Mahamat Saleh Mahamat\",\n  \"email\": \"saleh.mahamat@example.com\",\n  \"address\": \"Ecole de de Poste\",\n  \"type\": \"INDIVIDUAL\"\n}\n",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8081/api/customers/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8081",
-					"path": [
-						"api",
-						"customers",
-						""
-					]
-				},
-				"description": "Ajout d'un client client en tantque societe filiale"
-			},
-			"response": []
-		},
-		{
-			"name": "Ajout d'un client en tant filiale d'une company",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MDkxODcsImV4cCI6MTczNzQxMjc4N30.oKGy7s0AHs1rC1l4F9uPmjwimkHcEOVAftQAzI1AQrQ",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"name\": \"Toyota France\",\n  \"email\": \"france@toyota.com\",\n  \"address\": \"Lyon\",\n  \"type\": \"COMPANY\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8081/api/customers/2/subsidiaries",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8081",
-					"path": [
-						"api",
-						"customers",
-						"2",
-						"subsidiaries"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Avoir la liste de tous les client",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3Mzc1NzQ5MTIsImV4cCI6MTczNzU3ODUxMn0.nZs6kgISWsCzpccmvS2EJaw4izYwQy738RUjnjozKqw",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/customers/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"customers",
+						""
+					]
+				}
 			},
 			"response": []
 		},
@@ -183,6 +42,36 @@
 			"request": {
 				"method": "GET",
 				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/customers/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"customers",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mettre a jour un client",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Jane Doe\",\n  \"email\": \"msteach1547@gmail.com\",\n  \"address\": \"456 Avenue des Champs\",\n  \"type\": \"INDIVIDUAL\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "http://localhost:8081/api/customers/1",
 					"protocol": "http",
@@ -200,20 +89,12 @@
 			"response": []
 		},
 		{
-			"name": "Mettre a jour un client",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
 			"name": "Supprimer un client",
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8081/api/customers/2",
+					"raw": "http://localhost:8081/api/customers/3",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -222,7 +103,7 @@
 					"path": [
 						"api",
 						"customers",
-						"2"
+						"3"
 					]
 				}
 			},
@@ -234,7 +115,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8081/api/customers/search?name=John&type=INDIVIDUAL",
+					"raw": "http://localhost:8081/api/customers/search?type=INDIVIDUAL",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -246,10 +127,6 @@
 						"search"
 					],
 					"query": [
-						{
-							"key": "name",
-							"value": "John"
-						},
 						{
 							"key": "type",
 							"value": "INDIVIDUAL"
@@ -265,7 +142,7 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8081/api/customers/2/add-subsidiary/4",
+					"raw": "http://localhost:8081/api/customers/1/add-subsidiary/3",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -274,9 +151,9 @@
 					"path": [
 						"api",
 						"customers",
-						"2",
+						"1",
 						"add-subsidiary",
-						"4"
+						"3"
 					]
 				}
 			},
@@ -288,7 +165,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8081/api/customers/2/subsidiaries",
+					"raw": "http://localhost:8081/api/customers/3/subsidiaries",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -297,7 +174,7 @@
 					"path": [
 						"api",
 						"customers",
-						"2",
+						"3",
 						"subsidiaries"
 					]
 				}
@@ -311,7 +188,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"TechCorp Filiale 1\",\n  \"email\": \"filiale1@techcorp.com\",\n  \"address\": \"10 Rue des Startups\",\n  \"type\": \"COMPANY\"\n}\n",
+					"raw": "{\n  \"name\": \"TechCorp \",\n  \"email\": \"fil@techcorp.com\",\n  \"address\": \"10 Rue des Startups\",\n  \"type\": \"COMPANY\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -319,7 +196,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8081/api/customers/3/subsidiaries",
+					"raw": "http://localhost:8081/api/customers/1/subsidiaries",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -328,7 +205,7 @@
 					"path": [
 						"api",
 						"customers",
-						"3",
+						"1",
 						"subsidiaries"
 					]
 				}

@@ -17,7 +17,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MDkxODcsImV4cCI6MTczNzQxMjc4N30.oKGy7s0AHs1rC1l4F9uPmjwimkHcEOVAftQAzI1AQrQ",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTczNzU3MDAxMSwiZXhwIjoxNzM3NTczNjExfQ.U5dBrY-4u95HvQQ6qy948CkmexpDfbJRUsJTcn3BFKo",
 							"type": "string"
 						}
 					]
@@ -26,7 +26,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"Sièges en cuir\",\n  \"price\": 4000\n}",
+					"raw": "{\n  \"name\": \"Climatiseur\",\n  \"price\": 7000,\n  \"category\": \"PERFORMANCE\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -57,7 +57,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0ODk5NzIsImV4cCI6MTczNzQ5MzU3Mn0.52I2UVlHk4Y7zNH-bicBhrUmbIq-8l_3kxZr9hep89A",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3Mzc1NzQ5MTIsImV4cCI6MTczNzU3ODUxMn0.nZs6kgISWsCzpccmvS2EJaw4izYwQy738RUjnjozKqw",
 							"type": "string"
 						}
 					]
@@ -88,7 +88,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0ODk5NzIsImV4cCI6MTczNzQ5MzU3Mn0.52I2UVlHk4Y7zNH-bicBhrUmbIq-8l_3kxZr9hep89A",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc1MzY5ODIsImV4cCI6MTczNzU0MDU4Mn0.Q5rnnVYmHoobB817QT9RmDKyLcHohRgfi16zjZCW6es",
 							"type": "string"
 						}
 					]
@@ -131,7 +131,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc1MzY5ODIsImV4cCI6MTczNzU0MDU4Mn0.Q5rnnVYmHoobB817QT9RmDKyLcHohRgfi16zjZCW6es",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtcyIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTczNzU1MTA2NiwiZXhwIjoxNzM3NTU0NjY2fQ.igKWOWKhu3z5wU5WiDjJhK6ocj6G0WXDrni40Mj9NSQ",
 							"type": "string"
 						}
 					]
@@ -140,7 +140,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"Sièges en cuir\",\n  \"price\": 2000\n}",
+					"raw": "{\n  \"name\": \"Sièges en or\",\n  \"price\": 3000,\n  \"category\": \"PERFORMANCE\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -171,7 +171,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc1MzY5ODIsImV4cCI6MTczNzU0MDU4Mn0.Q5rnnVYmHoobB817QT9RmDKyLcHohRgfi16zjZCW6es",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtcyIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTczNzU1MTA2NiwiZXhwIjoxNzM3NTU0NjY2fQ.igKWOWKhu3z5wU5WiDjJhK6ocj6G0WXDrni40Mj9NSQ",
 							"type": "string"
 						}
 					]
@@ -180,7 +180,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"GPS\",\n    \"price\": 5000\n}",
+					"raw": "{\n    \"name\": \"GPS\",\n    \"price\": 5000,\n    \"category\": \"CONFORT\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -209,7 +209,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8081/api/options/2",
+					"raw": "http://localhost:8081/api/options/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -218,7 +218,7 @@
 					"path": [
 						"api",
 						"options",
-						"2"
+						"1"
 					]
 				}
 			},
@@ -228,7 +228,20 @@
 			"name": "Verifier les incompatibilite de cette option",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/options/incompatible",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"options",
+						"incompatible"
+					]
+				}
 			},
 			"response": []
 		}
