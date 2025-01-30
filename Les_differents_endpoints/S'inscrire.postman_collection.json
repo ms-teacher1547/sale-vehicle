@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"username\": \"msm\",\n  \"password\": \"password\",\n  \"role\": \"ADMIN\"\n}\n",
+					"raw": "{\n  \"username\": \"admin1\",\n  \"password\": \"password\",\n  \"fullName\": \"Admin User\",\n  \"role\": \"ADMIN\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -38,9 +38,30 @@
 		},
 		{
 			"name": "Login d'un ADMIN",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "admin1",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
 				"url": {
 					"raw": "http://localhost:8081/api/auth/login",
 					"protocol": "http",
@@ -62,6 +83,15 @@
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"username\": \"client1\",\n   \"password\": \"password\",\n   \"fullName\": \"Adam Mahamat Ali\",\n   \"email\": \"client1@example.com\",\n   \"address\": \"10 Rue du Marché\",\n   \"type\": \"INDIVIDUAL\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "http://localhost:8081/api/auth/register",
 					"protocol": "http",
@@ -115,7 +145,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"username\": \"entreprise1\",\n  \"password\": \"password\",\n  \"fullName\": \"TechCorp\",\n  \"email\": \"contact@techcorp.com\",\n  \"address\": \"50 Rue des Entreprises\",\n  \"type\": \"COMPANY\",\n  \"role\": \"USER\"\n}\n",
+					"raw": "{\n  \"username\": \"entreprise3\",\n  \"password\": \"password\",\n  \"fullName\": \"TechCorp 1\",\n  \"email\": \"cont@techcorp.com\",\n  \"address\": \"50 Rue des Entreprises\",\n  \"type\": \"COMPANY\",\n  \"role\": \"USER\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -144,7 +174,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8081/api/auth/login",
+					"raw": "http://localhost:8081/api/auth/login?username=entreprise3&password=password",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -154,6 +184,16 @@
 						"api",
 						"auth",
 						"login"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "entreprise3"
+						},
+						{
+							"key": "password",
+							"value": "password"
+						}
 					]
 				}
 			},
