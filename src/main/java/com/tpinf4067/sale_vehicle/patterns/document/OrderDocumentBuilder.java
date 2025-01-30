@@ -46,7 +46,7 @@ public class OrderDocumentBuilder implements DocumentBuilder {
 
         // 📌 **Bon de commande**
         Document orderDoc = new Document();
-        orderDoc.setTitle("📄 Bon de Commande");
+        orderDoc.setTitle("Bon de Commande");
 
         StringBuilder orderContent = new StringBuilder();
         orderContent.append("<p><strong>🛒 Détails de la commande</strong></p>");
@@ -85,7 +85,7 @@ public class OrderDocumentBuilder implements DocumentBuilder {
 
         // 📌 **Demande d'immatriculation**
         Document immatriculationDoc = new Document();
-        immatriculationDoc.setTitle("📄 Demande d'Immatriculation");
+        immatriculationDoc.setTitle("Demande d'Immatriculation");
 
         StringBuilder immatriculationContent = new StringBuilder();
         immatriculationContent.append("<p><strong>🚗 Demande d'immatriculation</strong></p>");
@@ -102,7 +102,7 @@ public class OrderDocumentBuilder implements DocumentBuilder {
 
         // 📌 **Certificat de Cession**
         Document cessionDoc = new Document();
-        cessionDoc.setTitle("📄 Certificat de Cession");
+        cessionDoc.setTitle("Certificat de Cession");
 
         StringBuilder cessionContent = new StringBuilder();
         cessionContent.append("<p><strong>🚗 Certificat de vente</strong></p>");
@@ -111,7 +111,7 @@ public class OrderDocumentBuilder implements DocumentBuilder {
             cessionContent.append("<p><strong>Véhicule :</strong> ").append(orderVehicle.getVehicle().getName()).append("</p>");
             cessionContent.append("<p><strong>Quantité :</strong> ").append(orderVehicle.getQuantity()).append("</p>");
         }
-        cessionContent.append("<p><strong>Vendeur :</strong> Entreprise XYZ</p>");
+        cessionContent.append("<p><strong>Vendeur :</strong> Entreprise Sale-Vehicule 🚗</p>");
         cessionContent.append("<p><strong>Acheteur :</strong> ").append(clientName).append("</p>");
         cessionContent.append("<p><strong>Prix Total :</strong> ").append(PRICE_FORMAT.format(order.getTotalPrice())).append(" FCFA</p>");
         cessionContent.append("<p><strong>Date de génération :</strong> ").append(formattedDate).append("</p>");

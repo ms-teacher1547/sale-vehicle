@@ -5,8 +5,10 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import com.tpinf4067.sale_vehicle.patterns.auth.User;
 import com.tpinf4067.sale_vehicle.patterns.document.Document;
 import com.tpinf4067.sale_vehicle.patterns.document.DocumentLiasseSingleton;
 import com.tpinf4067.sale_vehicle.patterns.order.factory.Order;
@@ -28,15 +30,17 @@ public class OrderController {
     }
 
     // ✅ Création d'une commande à partir du panier
-    // ✅ Correction : Ajout du paramètre paymentType
     @PostMapping("/")
-    public ResponseEntity<String> createOrder(@RequestBody OrderRequest request) {
-        Order order = orderService.createOrderFromCart(request.getCustomerId(), request.getPaymentType());
+    public ResponseEntity<String> createOrder(@RequestBody OrderRequest request, 
+                                              @AuthenticationPrincipal User user) {
+        if (user.getCustomer() == null) {
+            return ResponseEntity.badRequest().body("❌ Aucun client associé à cet utilisateur.");
+        }
+
+        Order order = orderService.createOrderFromCart(user.getCustomer().getId(), request.getPaymentType());
         return order != null ? ResponseEntity.ok("✅ Commande créée avec succès.") :
                 ResponseEntity.badRequest().body("❌ Impossible de créer la commande.");
     }
-    
-
 
     // ✅ Récupération de toutes les commandes
     @GetMapping("/")
@@ -69,24 +73,31 @@ public class OrderController {
         }
     }
 
-    // ✅ Changer le statut d'une commande
-    @PutMapping("/{orderId}/next")
-    public String nextStatus(@PathVariable Long orderId) {
-        Order order = orderService.changeOrderStatus(orderId, true);
-        return order != null ? "✅ Nouveau statut : " + order.getState() : "❌ Commande non trouvée.";
+    // ✅ Changer le statut d'une commande spécifique (ADMIN uniquement)
+    @PutMapping("/{orderId}/{action}")
+    public ResponseEntity<String> changeOrderStatus(@PathVariable Long orderId, @PathVariable String action) {
+        boolean next = "next".equalsIgnoreCase(action);
+        Order order = orderService.changeOrderStatus(orderId, next);
+        return order != null ? ResponseEntity.ok("✅ Nouveau statut : " + order.getState()) :
+                ResponseEntity.badRequest().body("❌ Commande non trouvée.");
     }
 
-    @PutMapping("/{orderId}/previous")
-    public String previousStatus(@PathVariable Long orderId) {
-        Order order = orderService.changeOrderStatus(orderId, false);
-        return order != null ? "✅ Nouveau statut : " + order.getState() : "❌ Commande non trouvée.";
+    // ✅ Changer l'état de la dernière commande du client connecté
+    @PutMapping("/status")
+    public ResponseEntity<String> changeLastOrderStatus(@AuthenticationPrincipal User user, @RequestParam boolean next) {
+        if (user.getCustomer() == null) {
+            return ResponseEntity.badRequest().body("❌ Aucun client associé à cet utilisateur.");
+        }
+
+        Order updatedOrder = orderService.changeLastOrderStatusForUser(user, next);
+        return updatedOrder != null ? ResponseEntity.ok("✅ Nouveau statut : " + updatedOrder.getState()) :
+                ResponseEntity.badRequest().body("❌ Aucune commande trouvée.");
     }
 
     // ✅ Rechercher des commandes par client et/ou état
     @GetMapping("/search")
-    public List<Order> searchOrders(
-            @RequestParam(required = false) Long customerId,
-            @RequestParam(required = false) String state) {
+    public List<Order> searchOrders(@RequestParam(required = false) Long customerId,
+                                    @RequestParam(required = false) String state) {
         return orderService.searchOrders(customerId, state);
     }
 }

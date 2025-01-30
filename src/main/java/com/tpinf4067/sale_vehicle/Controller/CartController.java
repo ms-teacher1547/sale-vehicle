@@ -1,9 +1,11 @@
 package com.tpinf4067.sale_vehicle.Controller;
 
 import com.tpinf4067.sale_vehicle.domain.Cart;
+import com.tpinf4067.sale_vehicle.patterns.auth.User;
 import com.tpinf4067.sale_vehicle.service.CartService;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -39,9 +41,24 @@ public class CartController {
 
     // ✅ Modifié pour accepter JSON au lieu de RequestParams
     @PostMapping("/add")
-    public ResponseEntity<Cart> addToCart(@RequestBody CartRequest request) {
-        return ResponseEntity.ok(cartService.addToCart(request.getCustomerId(), request.getVehicleId(), request.getOptions(), request.getQuantity()));
+    public ResponseEntity<Cart> addToCart(
+            @RequestBody CartRequest request,
+            @AuthenticationPrincipal User currentUser) {
+
+        // 🔥 Vérifier que l'utilisateur est bien un USER avec un Customer associé
+        if (currentUser.getCustomer() == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        // ✅ Récupérer l'ID du client automatiquement
+        Long customerId = currentUser.getCustomer().getId();
+
+        // ✅ Ajouter au panier sans demander `customerId` dans le body
+        Cart updatedCart = cartService.addToCart(customerId, request.getVehicleId(), request.getOptions(), request.getQuantity());
+
+        return ResponseEntity.ok(updatedCart);
     }
+
 
     @DeleteMapping("/{cartId}/remove/{itemId}")
     public ResponseEntity<Void> removeFromCart(@PathVariable Long cartId, @PathVariable Long itemId) {

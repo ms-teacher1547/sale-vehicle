@@ -1,11 +1,13 @@
 package com.tpinf4067.sale_vehicle.Controller;
 
+import com.tpinf4067.sale_vehicle.patterns.auth.User;
 import com.tpinf4067.sale_vehicle.patterns.payment.*;
 import com.tpinf4067.sale_vehicle.service.PaymentService;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.Path;
@@ -21,26 +23,28 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    // ✅ Création d’un paiement avec calcul des taxes
+    // ✅ Création d’un paiement (récupération automatique de la commande en attente)
     @PostMapping("/")
-    public ResponseEntity<Payment> createPayment(@RequestBody PaymentRequest request) {
-        return ResponseEntity.ok(paymentService.processPayment(request.getOrderId(), request.getPaymentType(), request.getCountry()));
+    public ResponseEntity<Payment> createPayment(
+            @RequestBody PaymentRequest request,
+            @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(paymentService.processPayment(user, request.getPaymentType(), request.getCountry()));
     }
     
 
-    // ✅ Confirmation d’un paiement
-    @PutMapping("/{paymentId}/confirm")
-    public ResponseEntity<Payment> confirmPayment(@PathVariable Long paymentId) {
-        return ResponseEntity.ok(paymentService.confirmPayment(paymentId));
+    // ✅ Confirmation d’un paiement (récupération automatique du dernier paiement en attente)
+    @PutMapping("/confirm")
+    public ResponseEntity<Payment> confirmPayment(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(paymentService.confirmPayment(user));
     }
 
-    // ✅ Rejet d’un paiement
-    @PutMapping("/{paymentId}/reject")
-    public ResponseEntity<Payment> rejectPayment(@PathVariable Long paymentId) {
-        return ResponseEntity.ok(paymentService.rejectPayment(paymentId));
+    // ✅ Rejet d’un paiement (utilisation automatique du dernier paiement en attente)
+    @PutMapping("/reject")
+    public ResponseEntity<Payment> rejectPayment(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(paymentService.rejectPayment(user));
     }
 
-    // ✅ Téléchargement de la facture PDF
+    // ✅ Téléchargement de la facture PDF (génération unique pour chaque facture)
     @GetMapping("/invoice/{filename}")
     public ResponseEntity<Resource> downloadInvoice(@PathVariable String filename) {
         try {

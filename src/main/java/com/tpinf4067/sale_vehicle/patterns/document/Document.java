@@ -8,8 +8,9 @@ import lombok.Setter;
 public class Document {
     private String title;
     private String content;
+    public String filename;
 
     public void showDocument() {
-        System.out.println("📄 " + title + " : " + content);
+        System.out.println(  title + " : " + content);
     }
 }

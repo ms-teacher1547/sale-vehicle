@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PaymentRequest {
-    private Long orderId;
+    // private Long orderId;
     private PaymentType paymentType;
     private String country;
 }
