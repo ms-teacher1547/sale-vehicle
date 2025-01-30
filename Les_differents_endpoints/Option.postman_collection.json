@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "9cce70d7-75c3-4100-a061-6aea89b752cc",
 		"name": "Option",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "39938539"
 	},
 	"item": [
@@ -14,9 +14,13 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MDkxODcsImV4cCI6MTczNzQxMjc4N30.oKGy7s0AHs1rC1l4F9uPmjwimkHcEOVAftQAzI1AQrQ"
-					}
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MDkxODcsImV4cCI6MTczNzQxMjc4N30.oKGy7s0AHs1rC1l4F9uPmjwimkHcEOVAftQAzI1AQrQ",
+							"type": "string"
+						}
+					]
 				},
 				"method": "POST",
 				"header": [],
@@ -29,7 +33,19 @@
 						}
 					}
 				},
-				"url": "http://localhost:8081/api/options/"
+				"url": {
+					"raw": "http://localhost:8081/api/options/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"options",
+						""
+					]
+				}
 			},
 			"response": []
 		},
@@ -38,13 +54,29 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0ODk5NzIsImV4cCI6MTczNzQ5MzU3Mn0.52I2UVlHk4Y7zNH-bicBhrUmbIq-8l_3kxZr9hep89A"
-					}
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0ODk5NzIsImV4cCI6MTczNzQ5MzU3Mn0.52I2UVlHk4Y7zNH-bicBhrUmbIq-8l_3kxZr9hep89A",
+							"type": "string"
+						}
+					]
 				},
 				"method": "GET",
 				"header": [],
-				"url": "http://localhost:8081/api/options/"
+				"url": {
+					"raw": "http://localhost:8081/api/options/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"options",
+						""
+					]
+				}
 			},
 			"response": []
 		},
@@ -53,9 +85,13 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0ODk5NzIsImV4cCI6MTczNzQ5MzU3Mn0.52I2UVlHk4Y7zNH-bicBhrUmbIq-8l_3kxZr9hep89A"
-					}
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0ODk5NzIsImV4cCI6MTczNzQ5MzU3Mn0.52I2UVlHk4Y7zNH-bicBhrUmbIq-8l_3kxZr9hep89A",
+							"type": "string"
+						}
+					]
 				},
 				"method": "POST",
 				"header": [],
@@ -68,7 +104,19 @@
 						}
 					}
 				},
-				"url": "http://localhost:8081/api/options/incompatible"
+				"url": {
+					"raw": "http://localhost:8081/api/options/incompatible",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"options",
+						"incompatible"
+					]
+				}
 			},
 			"response": []
 		},
@@ -80,9 +128,13 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc1MzY5ODIsImV4cCI6MTczNzU0MDU4Mn0.Q5rnnVYmHoobB817QT9RmDKyLcHohRgfi16zjZCW6es"
-					}
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc1MzY5ODIsImV4cCI6MTczNzU0MDU4Mn0.Q5rnnVYmHoobB817QT9RmDKyLcHohRgfi16zjZCW6es",
+							"type": "string"
+						}
+					]
 				},
 				"method": "POST",
 				"header": [],
@@ -95,7 +147,19 @@
 						}
 					}
 				},
-				"url": "http://localhost:8081/api/options/"
+				"url": {
+					"raw": "http://localhost:8081/api/options/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"options",
+						""
+					]
+				}
 			},
 			"response": []
 		},
@@ -104,9 +168,13 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc1MzY5ODIsImV4cCI6MTczNzU0MDU4Mn0.Q5rnnVYmHoobB817QT9RmDKyLcHohRgfi16zjZCW6es"
-					}
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc1MzY5ODIsImV4cCI6MTczNzU0MDU4Mn0.Q5rnnVYmHoobB817QT9RmDKyLcHohRgfi16zjZCW6es",
+							"type": "string"
+						}
+					]
 				},
 				"method": "POST",
 				"header": [],
@@ -119,7 +187,19 @@
 						}
 					}
 				},
-				"url": "http://localhost:8081/api/options/"
+				"url": {
+					"raw": "http://localhost:8081/api/options/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"options",
+						""
+					]
+				}
 			},
 			"response": []
 		},
@@ -128,7 +208,19 @@
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"url": "http://localhost:8081/api/options/2"
+				"url": {
+					"raw": "http://localhost:8081/api/options/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"options",
+						"2"
+					]
+				}
 			},
 			"response": []
 		},

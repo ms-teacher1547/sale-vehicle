@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "6fe55d8b-8e62-4b8b-820b-71cfc141b9e9",
 		"name": "Voiture",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "39938539"
 	},
 	"item": [
@@ -11,9 +11,13 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MjMwMDEsImV4cCI6MTczNzQyNjYwMX0.xkSeJSb2f6YqgJkOji7D4pfDjQe4QWYGeW-HU_cE0ug"
-					}
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MjMwMDEsImV4cCI6MTczNzQyNjYwMX0.xkSeJSb2f6YqgJkOji7D4pfDjQe4QWYGeW-HU_cE0ug",
+							"type": "string"
+						}
+					]
 				},
 				"method": "POST",
 				"header": [],
@@ -26,7 +30,20 @@
 						}
 					}
 				},
-				"url": "http://localhost:8081/api/catalog/vehicles/car"
+				"url": {
+					"raw": "http://localhost:8081/api/catalog/vehicles/car",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"catalog",
+						"vehicles",
+						"car"
+					]
+				}
 			},
 			"response": []
 		},
@@ -35,9 +52,13 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MjMwMDEsImV4cCI6MTczNzQyNjYwMX0.xkSeJSb2f6YqgJkOji7D4pfDjQe4QWYGeW-HU_cE0ug"
-					}
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MjMwMDEsImV4cCI6MTczNzQyNjYwMX0.xkSeJSb2f6YqgJkOji7D4pfDjQe4QWYGeW-HU_cE0ug",
+							"type": "string"
+						}
+					]
 				},
 				"method": "POST",
 				"header": [],
@@ -50,7 +71,20 @@
 						}
 					}
 				},
-				"url": "http://localhost:8081/api/catalog/vehicles/car"
+				"url": {
+					"raw": "http://localhost:8081/api/catalog/vehicles/car",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"catalog",
+						"vehicles",
+						"car"
+					]
+				}
 			},
 			"response": []
 		},
@@ -59,13 +93,29 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0OTUxOTYsImV4cCI6MTczNzQ5ODc5Nn0.hA06DI0VHsffvpgybQ9mtDVQm7UMCM5LDCAhNk7ihsA"
-					}
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0OTUxOTYsImV4cCI6MTczNzQ5ODc5Nn0.hA06DI0VHsffvpgybQ9mtDVQm7UMCM5LDCAhNk7ihsA",
+							"type": "string"
+						}
+					]
 				},
 				"method": "GET",
 				"header": [],
-				"url": "http://localhost:8081/api/catalog/vehicles"
+				"url": {
+					"raw": "http://localhost:8081/api/catalog/vehicles",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"catalog",
+						"vehicles"
+					]
+				}
 			},
 			"response": []
 		},
@@ -90,7 +140,20 @@
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"url": "http://localhost:8081/api/catalog/vehicles/1"
+				"url": {
+					"raw": "http://localhost:8081/api/catalog/vehicles/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"catalog",
+						"vehicles",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
@@ -117,7 +180,20 @@
 						}
 					]
 				},
-				"url": "http://localhost:8081/api/catalog/vehicles/discount"
+				"url": {
+					"raw": "http://localhost:8081/api/catalog/vehicles/discount",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"catalog",
+						"vehicles",
+						"discount"
+					]
+				}
 			},
 			"response": []
 		},
@@ -135,7 +211,21 @@
 						}
 					}
 				},
-				"url": "http://localhost:8081/api/catalog/vehicles/1/animation"
+				"url": {
+					"raw": "http://localhost:8081/api/catalog/vehicles/1/animation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"catalog",
+						"vehicles",
+						"1",
+						"animation"
+					]
+				}
 			},
 			"response": []
 		},

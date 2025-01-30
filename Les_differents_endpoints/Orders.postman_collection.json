@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "99a063e6-47e0-4f10-9aac-9149b0708756",
 		"name": "Orders",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "39938539"
 	},
 	"item": [
@@ -11,9 +11,13 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MzE5ODMsImV4cCI6MTczNzQzNTU4M30.a01bRETRh_bdjUEupkXuWsXGLGUeRrcqlRRfYtRe9wg"
-					}
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MzE5ODMsImV4cCI6MTczNzQzNTU4M30.a01bRETRh_bdjUEupkXuWsXGLGUeRrcqlRRfYtRe9wg",
+							"type": "string"
+						}
+					]
 				},
 				"method": "POST",
 				"header": [],
@@ -48,13 +52,30 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MzE5ODMsImV4cCI6MTczNzQzNTU4M30.a01bRETRh_bdjUEupkXuWsXGLGUeRrcqlRRfYtRe9wg"
-					}
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MzE5ODMsImV4cCI6MTczNzQzNTU4M30.a01bRETRh_bdjUEupkXuWsXGLGUeRrcqlRRfYtRe9wg",
+							"type": "string"
+						}
+					]
 				},
 				"method": "PUT",
 				"header": [],
-				"url": "http://localhost:8081/api/orders/1/next"
+				"url": {
+					"raw": "http://localhost:8081/api/orders/1/next",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"orders",
+						"1",
+						"next"
+					]
+				}
 			},
 			"response": []
 		},

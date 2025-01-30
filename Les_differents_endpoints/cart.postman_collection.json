@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "9e048f14-7d13-4c26-b4d2-55c1903fc2c6",
 		"name": "cart",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "39938539"
 	},
 	"item": [
@@ -11,9 +11,13 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0ODk5NzIsImV4cCI6MTczNzQ5MzU3Mn0.52I2UVlHk4Y7zNH-bicBhrUmbIq-8l_3kxZr9hep89A"
-					}
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0ODk5NzIsImV4cCI6MTczNzQ5MzU3Mn0.52I2UVlHk4Y7zNH-bicBhrUmbIq-8l_3kxZr9hep89A",
+							"type": "string"
+						}
+					]
 				},
 				"method": "POST",
 				"header": [],
@@ -26,7 +30,19 @@
 						}
 					}
 				},
-				"url": "http://localhost:8081/api/cart/add"
+				"url": {
+					"raw": "http://localhost:8081/api/cart/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"cart",
+						"add"
+					]
+				}
 			},
 			"response": []
 		},
@@ -35,13 +51,29 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0ODk5NzIsImV4cCI6MTczNzQ5MzU3Mn0.52I2UVlHk4Y7zNH-bicBhrUmbIq-8l_3kxZr9hep89A"
-					}
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0ODk5NzIsImV4cCI6MTczNzQ5MzU3Mn0.52I2UVlHk4Y7zNH-bicBhrUmbIq-8l_3kxZr9hep89A",
+							"type": "string"
+						}
+					]
 				},
 				"method": "GET",
 				"header": [],
-				"url": "http://localhost:8081/api/cart/1"
+				"url": {
+					"raw": "http://localhost:8081/api/cart/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"cart",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
@@ -59,7 +91,21 @@
 						}
 					}
 				},
-				"url": "http://localhost:8081/api/cart/1/remove/1"
+				"url": {
+					"raw": "http://localhost:8081/api/cart/1/remove/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"cart",
+						"1",
+						"remove",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
@@ -68,7 +114,20 @@
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"url": "http://localhost:8081/api/cart/clear/1"
+				"url": {
+					"raw": "http://localhost:8081/api/cart/clear/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"cart",
+						"clear",
+						"1"
+					]
+				}
 			},
 			"response": []
 		}

@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "43d8f61a-b99d-4d9b-8141-ce2e06758fb9",
 		"name": "Customer",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "39938539"
 	},
 	"item": [
@@ -11,9 +11,13 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MDkxODcsImV4cCI6MTczNzQxMjc4N30.oKGy7s0AHs1rC1l4F9uPmjwimkHcEOVAftQAzI1AQrQ"
-					}
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MDkxODcsImV4cCI6MTczNzQxMjc4N30.oKGy7s0AHs1rC1l4F9uPmjwimkHcEOVAftQAzI1AQrQ",
+							"type": "string"
+						}
+					]
 				},
 				"method": "POST",
 				"header": [],
@@ -26,7 +30,19 @@
 						}
 					}
 				},
-				"url": "http://localhost:8081/api/customers/",
+				"url": {
+					"raw": "http://localhost:8081/api/customers/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"customers",
+						""
+					]
+				},
 				"description": "Ajout d'un client en tant que client simple"
 			},
 			"response": []
@@ -36,9 +52,13 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MDkxODcsImV4cCI6MTczNzQxMjc4N30.oKGy7s0AHs1rC1l4F9uPmjwimkHcEOVAftQAzI1AQrQ"
-					}
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MDkxODcsImV4cCI6MTczNzQxMjc4N30.oKGy7s0AHs1rC1l4F9uPmjwimkHcEOVAftQAzI1AQrQ",
+							"type": "string"
+						}
+					]
 				},
 				"method": "POST",
 				"header": [],
@@ -51,7 +71,19 @@
 						}
 					}
 				},
-				"url": "http://localhost:8081/api/customers/",
+				"url": {
+					"raw": "http://localhost:8081/api/customers/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"customers",
+						""
+					]
+				},
 				"description": "Ajout d'un client entant que societe"
 			},
 			"response": []
@@ -61,9 +93,13 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MDkxODcsImV4cCI6MTczNzQxMjc4N30.oKGy7s0AHs1rC1l4F9uPmjwimkHcEOVAftQAzI1AQrQ"
-					}
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MDkxODcsImV4cCI6MTczNzQxMjc4N30.oKGy7s0AHs1rC1l4F9uPmjwimkHcEOVAftQAzI1AQrQ",
+							"type": "string"
+						}
+					]
 				},
 				"method": "POST",
 				"header": [],
@@ -76,7 +112,19 @@
 						}
 					}
 				},
-				"url": "http://localhost:8081/api/customers/",
+				"url": {
+					"raw": "http://localhost:8081/api/customers/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"customers",
+						""
+					]
+				},
 				"description": "Ajout d'un client client en tantque societe filiale"
 			},
 			"response": []
@@ -86,9 +134,13 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MDkxODcsImV4cCI6MTczNzQxMjc4N30.oKGy7s0AHs1rC1l4F9uPmjwimkHcEOVAftQAzI1AQrQ"
-					}
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtc20iLCJpYXQiOjE3Mzc0MDkxODcsImV4cCI6MTczNzQxMjc4N30.oKGy7s0AHs1rC1l4F9uPmjwimkHcEOVAftQAzI1AQrQ",
+							"type": "string"
+						}
+					]
 				},
 				"method": "POST",
 				"header": [],
@@ -101,7 +153,20 @@
 						}
 					}
 				},
-				"url": "http://localhost:8081/api/customers/2/subsidiaries"
+				"url": {
+					"raw": "http://localhost:8081/api/customers/2/subsidiaries",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"customers",
+						"2",
+						"subsidiaries"
+					]
+				}
 			},
 			"response": []
 		},
@@ -118,7 +183,19 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "http://localhost:8081/api/customers/1"
+				"url": {
+					"raw": "http://localhost:8081/api/customers/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"customers",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
@@ -135,7 +212,19 @@
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"url": "http://localhost:8081/api/customers/2"
+				"url": {
+					"raw": "http://localhost:8081/api/customers/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"customers",
+						"2"
+					]
+				}
 			},
 			"response": []
 		},
@@ -175,7 +264,21 @@
 			"request": {
 				"method": "PUT",
 				"header": [],
-				"url": "http://localhost:8081/api/customers/2/add-subsidiary/4"
+				"url": {
+					"raw": "http://localhost:8081/api/customers/2/add-subsidiary/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"customers",
+						"2",
+						"add-subsidiary",
+						"4"
+					]
+				}
 			},
 			"response": []
 		},
@@ -184,7 +287,51 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "http://localhost:8081/api/customers/2/subsidiaries"
+				"url": {
+					"raw": "http://localhost:8081/api/customers/2/subsidiaries",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"customers",
+						"2",
+						"subsidiaries"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ajouter d'une Filale",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"TechCorp Filiale 1\",\n  \"email\": \"filiale1@techcorp.com\",\n  \"address\": \"10 Rue des Startups\",\n  \"type\": \"COMPANY\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/customers/3/subsidiaries",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"customers",
+						"3",
+						"subsidiaries"
+					]
+				}
 			},
 			"response": []
 		}
