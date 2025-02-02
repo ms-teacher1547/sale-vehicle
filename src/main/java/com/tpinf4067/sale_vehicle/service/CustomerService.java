@@ -1,6 +1,9 @@
 package com.tpinf4067.sale_vehicle.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.tpinf4067.sale_vehicle.patterns.auth.Role;
 import com.tpinf4067.sale_vehicle.patterns.auth.User;
 import com.tpinf4067.sale_vehicle.patterns.customer.Customer;
 import com.tpinf4067.sale_vehicle.patterns.customer.enums.CustomerType;
@@ -68,14 +71,40 @@ public class CustomerService {
     }
 
     // ✅ Supprimer un client
-    public boolean deleteCustomer(Long id) {
-        if (customerRepository.existsById(id)) {
-            customerRepository.deleteById(id);
-            return true;
+    @Transactional
+    public boolean deleteCustomer(Long id, User currentUser) {
+        Optional<Customer> customerOpt = customerRepository.findById(id);
+    
+        if (customerOpt.isPresent()) {
+            Customer customer = customerOpt.get();
+    
+            // 🔹 Vérifier si c'est un ADMIN (peut tout supprimer)
+            if (currentUser.getRole() == Role.ADMIN) {
+                if (customer.getUser() != null) {
+                    userRepository.delete(customer.getUser()); // ✅ Supprime d'abord l'utilisateur lié
+                }
+                customerRepository.delete(customer);
+                return true;
+            }
+    
+            // 🔹 Vérifier si c'est une COMPANY et si la filiale lui appartient
+            if (currentUser.getCustomer() != null && currentUser.getCustomer().getType() == CustomerType.COMPANY) {
+                boolean isSubsidiary = currentUser.getCustomer().getSubsidiaries().stream()
+                        .anyMatch(sub -> sub.getId().equals(id));
+                if (isSubsidiary) {
+                    if (customer.getUser() != null) {
+                        userRepository.delete(customer.getUser()); // ✅ Supprime d'abord l'utilisateur lié
+                    }
+                    customerRepository.delete(customer);
+                    return true;
+                }
+            }
         }
         return false;
     }
-
+    
+    
+    
     // ✅ **Récupérer un client par email**
     public Customer getCustomerByEmail(String email) {
         return customerRepository.findByEmail(email).orElse(null);

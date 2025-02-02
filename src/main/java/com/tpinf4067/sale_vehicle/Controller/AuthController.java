@@ -103,13 +103,15 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
         try {
-            request.getSession().invalidate();
+            request.getSession().invalidate(); // ✅ Supprime la session serveur
             SecurityContextHolder.clearContext();
+            response.setHeader("Set-Cookie", "JSESSIONID=; HttpOnly; Path=/; Max-Age=0;"); // ✅ Force suppression du cookie
             return ResponseEntity.ok("✅ Déconnexion réussie !");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("❌ Erreur lors de la déconnexion");
         }
     }
+    
 
     // ✅ **Classe pour gérer la requête d'inscription avec getters et setters**
     private static class RegisterRequest {

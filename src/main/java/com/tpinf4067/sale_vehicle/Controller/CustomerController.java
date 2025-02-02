@@ -52,9 +52,11 @@ public class CustomerController {
 
     // ✅ Supprimer un client
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
-        return customerService.deleteCustomer(id) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    public ResponseEntity<Void> deleteCustomer(@PathVariable Long id, @AuthenticationPrincipal User currentUser) {
+        boolean deleted = customerService.deleteCustomer(id, currentUser);
+        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
+    
 
     // ✅ Ajouter une filiale à une société
     @PostMapping("/{companyId}/subsidiaries")

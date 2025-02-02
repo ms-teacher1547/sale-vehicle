@@ -1,18 +1,12 @@
 package com.tpinf4067.sale_vehicle.Controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.tpinf4067.sale_vehicle.domain.Car;
 import com.tpinf4067.sale_vehicle.domain.Scooter;
 import com.tpinf4067.sale_vehicle.domain.Vehicle;
-import com.tpinf4067.sale_vehicle.patterns.catalog.decorator.BasicVehicleDisplay;
-import com.tpinf4067.sale_vehicle.patterns.catalog.decorator.IconDecorator;
-import com.tpinf4067.sale_vehicle.patterns.catalog.decorator.PriceTagDecorator;
-import com.tpinf4067.sale_vehicle.patterns.catalog.decorator.VehicleDisplay;
 import com.tpinf4067.sale_vehicle.service.VehicleService;
 
 @RestController
@@ -26,17 +20,13 @@ public class CatalogController {
     }
 
     // ✅ Récupérer tous les véhicules avec affichage décoré
+    // ✅ Maintenant, on retourne une vraie liste JSON d'objets Vehicle !
     @GetMapping("/vehicles")
-    public List<String> getAllVehicles() {
-        return vehicleService.getAllVehicles().stream()
-                .map(vehicle -> {
-                    VehicleDisplay display = new BasicVehicleDisplay(vehicle);
-                    display = new IconDecorator(display);
-                    display = new PriceTagDecorator(display);
-                    return display.display();
-                })
-                .collect(Collectors.toList());
+    public ResponseEntity<List<Vehicle>> getAllVehicles() {
+        List<Vehicle> vehicles = vehicleService.getAllVehicles();
+        return ResponseEntity.ok(vehicles);
     }
+
 
     // ✅ Ajouter une voiture
     @PostMapping("/vehicles/car")
@@ -112,12 +102,63 @@ public class CatalogController {
     @PutMapping("/vehicles/{id}/update")
     public ResponseEntity<Vehicle> updateVehicleDetails(
         @PathVariable Long id,
-        @RequestParam int stockQuantity,
-        @RequestParam int yearOfManufacture,
-        @RequestParam String fuelType,
-        @RequestParam int mileage) {
-    Vehicle updatedVehicle = vehicleService.updateVehicleDetails(id, stockQuantity, yearOfManufacture, fuelType, mileage);
-    return updatedVehicle != null ? ResponseEntity.ok(updatedVehicle) : ResponseEntity.notFound().build();
-}
+        @RequestBody VehicleUpdateRequest request) { // Utiliser un objet pour le corps de la requête
+        Vehicle updatedVehicle = vehicleService.updateVehicleDetails(
+            id,
+            request.getStockQuantity(),
+            request.getYearOfManufacture(),
+            request.getFuelType(),
+            request.getMileage()
+        );
+        return updatedVehicle != null ? ResponseEntity.ok(updatedVehicle) : ResponseEntity.notFound().build();
+    }
+
+    // ✅ Récupérer les détails d'un véhicule spécifique
+    @GetMapping("/vehicles/{id}")
+    public ResponseEntity<Vehicle> getVehicleDetails(@PathVariable Long id) {
+        Vehicle vehicle = vehicleService.getVehicleById(id);
+        return vehicle != null ? ResponseEntity.ok(vehicle) : ResponseEntity.notFound().build();
+    }
+
+    public class VehicleUpdateRequest {
+        private int stockQuantity;
+        private int yearOfManufacture;
+        private String fuelType;
+        private int mileage;
+    
+        // Getters et setters
+        public int getStockQuantity() {
+            return stockQuantity;
+        }
+
+        public void setStockQuantity(int stockQuantity) {
+            this.stockQuantity = stockQuantity;
+        }
+
+        public int getYearOfManufacture() {
+            return yearOfManufacture;
+        }
+
+        public void setYearOfManufacture(int yearOfManufacture) {
+            this.yearOfManufacture = yearOfManufacture;
+        }
+
+        public String getFuelType() {
+            return fuelType;
+        }
+
+        public void setFuelType(String fuelType) {
+            this.fuelType = fuelType;
+        }
+
+        public int getMileage() {
+            return mileage;
+        }
+
+        public void setMileage(int mileage) {
+            this.mileage = mileage;
+        }
+    }
+
 
 }
