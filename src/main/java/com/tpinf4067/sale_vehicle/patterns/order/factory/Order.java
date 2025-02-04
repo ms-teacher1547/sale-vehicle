@@ -5,9 +5,11 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tpinf4067.sale_vehicle.domain.Option;
 import com.tpinf4067.sale_vehicle.domain.Vehicle;
 import com.tpinf4067.sale_vehicle.patterns.customer.Customer;
+import com.tpinf4067.sale_vehicle.patterns.document.Document;
 import com.tpinf4067.sale_vehicle.patterns.order.state.DeliveredState;
 import com.tpinf4067.sale_vehicle.patterns.order.state.OrderState;
 import com.tpinf4067.sale_vehicle.patterns.order.state.PendingState;
@@ -55,6 +57,12 @@ public class Order {
 
     @Column(nullable = false)
     private String stateName;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    @JsonManagedReference  // ✅ Empêche la récursion infinie
+    private List<Document> documents = new ArrayList<>();
+
 
     @PrePersist
     protected void onCreate() {

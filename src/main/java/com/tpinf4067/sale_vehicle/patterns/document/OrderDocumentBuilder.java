@@ -85,7 +85,7 @@ public class OrderDocumentBuilder implements DocumentBuilder {
 
         // 📌 **Demande d'immatriculation**
         Document immatriculationDoc = new Document();
-        immatriculationDoc.setTitle("Demande d'Immatriculation");
+        immatriculationDoc.setTitle("Demande dImmatriculation");
 
         StringBuilder immatriculationContent = new StringBuilder();
         immatriculationContent.append("<p><strong>🚗 Demande d'immatriculation</strong></p>");

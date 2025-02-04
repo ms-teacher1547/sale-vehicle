@@ -9,7 +9,6 @@ import com.tpinf4067.sale_vehicle.patterns.document.*;
 import com.tpinf4067.sale_vehicle.patterns.order.factory.*;
 import com.tpinf4067.sale_vehicle.patterns.order.state.*;
 import com.tpinf4067.sale_vehicle.patterns.payment.PaymentStatus;
-import com.tpinf4067.sale_vehicle.patterns.payment.PaymentType;
 import com.tpinf4067.sale_vehicle.patterns.order.observer.EmailOrderNotifier;
 import com.tpinf4067.sale_vehicle.patterns.order.observer.OrderNotifier;
 import com.tpinf4067.sale_vehicle.repository.CustomerRepository;
@@ -41,7 +40,7 @@ public class OrderService {
     }
 
     // ✅ Création d'une commande depuis le panier SANS générer les documents
-    public Order createOrderFromCart(Long customerId, String paymentTypeStr) {
+    public Order createOrderFromCart(Long customerId) {
         Cart cart = cartService.getCartForCustomer(customerId);
 
         if (cart.getItems().isEmpty()) {
@@ -58,19 +57,19 @@ public class OrderService {
         }
 
         // Vérification du type de paiement
-        PaymentType paymentType;
-        try {
-            paymentType = PaymentType.valueOf(paymentTypeStr.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Type de paiement invalide : " + paymentTypeStr);
-        } 
+        // PaymentType paymentType;
+        // try {
+        //     paymentType = PaymentType.valueOf(paymentTypeStr.toUpperCase());
+        // } catch (IllegalArgumentException e) {
+        //     throw new IllegalArgumentException("Type de paiement invalide : " + paymentTypeStr);
+        // } 
 
-        // Factory Method pour créer la commande
-        OrderFactory orderFactory = (paymentType == PaymentType.COMPTANT) ? 
-                                    new ComptantOrderFactory() : 
+        //Factory Method pour créer la commande
+        OrderFactory orderFactory = //(paymentType == PaymentType.COMPTANT) ? 
+        //                             new ComptantOrderFactory() : 
                                     new CreditOrderFactory();
 
-        Order order = orderFactory.createOrder(cart, paymentType);
+        Order order = orderFactory.createOrder(cart);//, paymentType);
         order.setCustomer(cart.getCustomer());
         order.setState(new PendingState()); // ✅ Commande en attente
         order.setDateDeCommande(new Date());
@@ -97,11 +96,10 @@ public class OrderService {
     }
 
     // ✅ Génération des documents UNIQUEMENT après confirmation
-   // ✅ Génération des documents après confirmation
     private void generateOrderDocuments(Order order) {
         String orderId = String.valueOf(order.getId()); // ✅ ID unique pour chaque commande
 
-        System.out.println("Construction des documents pour la commande #" + orderId);
+        System.out.println("📄 Construction des documents pour la commande #" + orderId);
 
         OrderDocumentBuilder builder = new OrderDocumentBuilder();
         builder.constructOrderDocuments(order);
@@ -113,15 +111,25 @@ public class OrderService {
             return;
         }
 
-        // 🔥 Associer les documents à l'ID de la commande
+        // 🔥 Associer les documents à la commande et les sauvegarder
         for (Document document : documents) {
-            document.setTitle(document.getTitle() + " - Commande #" + orderId);
+            String formattedTitle = document.getTitle() + " - Commande #" + orderId;
+            String fileName = formattedTitle.replace(" ", "_").replace("'", "") + ".pdf"; // ✅ Nettoyage du nom de fichier
+            
+            document.setTitle(formattedTitle);
+            document.setFilename(fileName); // ✅ Ajoute le nom du fichier
+            document.setOrder(order); // ✅ Associe le document à la commande
+
             pdfAdapter.export(document);
-            System.out.println("Document exporté : " + document.getTitle());
+            order.getDocuments().add(document);
         }
 
-        System.out.println("✅ Tous les documents ont été générés pour la commande #" + orderId);
+        orderRepository.save(order); // ✅ Sauvegarde en base avec les documents
+        System.out.println("✅ Tous les documents ont été générés et stockés en base pour la commande #" + orderId);
     }
+
+
+
 
 
 
@@ -232,5 +240,15 @@ public class OrderService {
         // 🔥 Changer son état
         return changeOrderStatus(lastOrder.getId(), next);
     }
+
+    // ✅ Récupérer toutes les commandes d'un client spécifique
+    public List<Order> getOrdersByCustomer(User user) {
+        if (user.getCustomer() == null) {
+            throw new IllegalStateException("Utilisateur sans client associé !");
+        }
+
+        return orderRepository.findByCustomerId(user.getCustomer().getId());
+    }
+
 
 }

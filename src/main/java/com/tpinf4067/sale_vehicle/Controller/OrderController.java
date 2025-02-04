@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.tpinf4067.sale_vehicle.patterns.auth.User;
 import com.tpinf4067.sale_vehicle.patterns.document.Document;
-import com.tpinf4067.sale_vehicle.patterns.document.DocumentLiasseSingleton;
 import com.tpinf4067.sale_vehicle.patterns.order.factory.Order;
-import com.tpinf4067.sale_vehicle.patterns.order.factory.OrderRequest;
+import com.tpinf4067.sale_vehicle.repository.DocumentRepository;
 import com.tpinf4067.sale_vehicle.service.OrderService;
 
 import java.nio.file.Path;
@@ -24,20 +23,22 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
+    private final DocumentRepository documentRepository;
 
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, DocumentRepository documentRepository) {
         this.orderService = orderService;
+        this.documentRepository = documentRepository;
     }
 
     // ✅ Création d'une commande à partir du panier
     @PostMapping("/")
-    public ResponseEntity<String> createOrder(@RequestBody OrderRequest request, 
+    public ResponseEntity<String> createOrder(
                                               @AuthenticationPrincipal User user) {
         if (user.getCustomer() == null) {
             return ResponseEntity.badRequest().body("❌ Aucun client associé à cet utilisateur.");
         }
 
-        Order order = orderService.createOrderFromCart(user.getCustomer().getId(), request.getPaymentType());
+        Order order = orderService.createOrderFromCart(user.getCustomer().getId());
         return order != null ? ResponseEntity.ok("✅ Commande créée avec succès.") :
                 ResponseEntity.badRequest().body("❌ Impossible de créer la commande.");
     }
@@ -50,15 +51,46 @@ public class OrderController {
 
     // ✅ Récupération des documents de commande
     @GetMapping("/documents")
-    public List<Document> getAllDocuments() {
-        return DocumentLiasseSingleton.getInstance().getDocuments();
+    public ResponseEntity<List<Document>> getAllDocuments() {
+        List<Order> orders = orderService.getAllOrders();
+        List<Document> allDocuments = orders.stream()
+            .flatMap(order -> order.getDocuments().stream())
+            .toList();
+    
+        return ResponseEntity.ok(allDocuments);
     }
+    
+    // ✅ Récupérer les documents d'un client spécifique
+    @GetMapping("/my-documents")
+    public ResponseEntity<List<Document>> getMyDocuments(@AuthenticationPrincipal User user) {
+        if (user.getCustomer() == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    
+        List<Order> orders = orderService.getOrdersByCustomer(user);
+        List<Document> myDocuments = orders.stream()
+            .flatMap(order -> order.getDocuments().stream())
+            .toList();
+    
+        return ResponseEntity.ok(myDocuments);
+    }
+    
 
-    // ✅ Télécharger un fichier PDF
-    @GetMapping("/download/{filename}")
-    public ResponseEntity<Resource> downloadPDF(@PathVariable String filename) {
+
+    // ✅ Télécharger un document PDF par son ID
+    @GetMapping("/download/{documentId}")
+    public ResponseEntity<Resource> downloadDocument(@PathVariable Long documentId) {
         try {
-            Path filePath = Paths.get("documents").resolve(filename).normalize();
+            // 🔥 Récupérer le document par son ID
+            Document document = documentRepository.findById(documentId)
+                    .orElseThrow(() -> new IllegalArgumentException("Document non trouvé !"));
+
+            // 🔥 Vérifier si le fichier existe dans le dossier "documents"
+            // Remplacement des caractères spéciaux avant de construire le chemin
+            String safeFilename = document.getFilename().replace("’", "'"); // Remplace l’apostrophe spéciale
+            safeFilename = safeFilename.replace(" ", "_"); // Remplace les espaces par des underscores
+
+            Path filePath = Paths.get("documents").resolve(safeFilename).normalize();
             Resource resource = new UrlResource(filePath.toUri());
 
             if (!resource.exists() || !resource.isReadable()) {
@@ -72,6 +104,7 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
 
     // ✅ Changer le statut d'une commande spécifique (ADMIN uniquement)
     @PutMapping("/{orderId}/{action}")
@@ -100,4 +133,19 @@ public class OrderController {
                                     @RequestParam(required = false) String state) {
         return orderService.searchOrders(customerId, state);
     }
+
+    // ✅ Récupérer les commandes du client connecté
+    @GetMapping("/my-orders")
+    public ResponseEntity<List<Order>> getMyOrders(@AuthenticationPrincipal User user) {
+        System.out.println("Utilisateur connecté : " + user.getUsername() + " - Rôles : " + user.getAuthorities());
+    
+        if (user.getCustomer() == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    
+        List<Order> orders = orderService.getOrdersByCustomer(user);
+        return ResponseEntity.ok(orders);
+    }
+    
+
 }

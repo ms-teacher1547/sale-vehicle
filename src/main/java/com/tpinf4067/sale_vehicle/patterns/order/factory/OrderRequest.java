@@ -7,5 +7,4 @@ import lombok.Setter;
 @Setter
 public class OrderRequest {
     private Long customerId;
-    private String paymentType;
 }

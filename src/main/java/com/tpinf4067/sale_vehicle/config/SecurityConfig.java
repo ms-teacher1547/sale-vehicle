@@ -43,10 +43,13 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/auth/me").authenticated() // ✅ Assure que seul un utilisateur connecté peut accéder à /me
                 .requestMatchers(HttpMethod.POST, "/api/auth/logout").authenticated()
-                .requestMatchers(HttpMethod.GET, "/api/catalog/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/catalog/vehicles/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/catalog/vehicles/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/catalog/vehicles/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/catalog/vehicles/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/orders/my-orders").hasRole("USER")
+                .requestMatchers(HttpMethod.GET, "/api/orders/my-documents").hasAnyRole("ADMIN","USER")
+                .requestMatchers(HttpMethod.GET, "/api/orders/download/{id}").hasAnyRole("ADMIN","USER")
                 .requestMatchers(HttpMethod.GET, "/api/orders/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/api/orders/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/customers/").hasRole("ADMIN") // ✅ Seul ADMIN peut voir tous les clients
