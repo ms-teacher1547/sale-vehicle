@@ -2,6 +2,8 @@ package com.tpinf4067.sale_vehicle.patterns.document;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.tpinf4067.sale_vehicle.patterns.order.factory.Order;
+import com.tpinf4067.sale_vehicle.patterns.payment.Payment;
+
 import jakarta.persistence.*;
 
 import lombok.Getter;
@@ -22,6 +24,10 @@ public class Document {
     @Lob  // ✅ Permet de stocker un texte long
     @Column(columnDefinition = "TEXT")  // ✅ Définit le type SQL comme TEXT
     private String content;
+
+    @ManyToOne
+    @JoinColumn(name = "payment_id", nullable = true) // 🔥 Associe la facture à un paiement
+    private Payment payment;
 
     @ManyToOne(fetch = FetchType.LAZY) // ✅ Plusieurs documents peuvent être associés à une commande
     @JoinColumn(name = "order_id") // ✅ Clé étrangère vers Order

@@ -32,5 +32,10 @@ public class DocumentLiasseSingleton {
     public List<Document> getDocuments() {
         return documents;
     }
-    
+
+    // ✅ Nouvelle méthode pour réinitialiser les documents
+    public void clearDocuments() {
+        documents.clear();
+        System.out.println("🔄 Réinitialisation de la liasse de documents !");
+    }
 }

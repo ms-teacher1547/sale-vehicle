@@ -9,4 +9,10 @@ import java.util.List;
 @Repository
 public interface DocumentRepository extends JpaRepository<Document, Long> {
     List<Document> findByOrderId(Long orderId);
+
+    List<Document> findByTitleContaining(String string);
+
+    List<Document> findByTitleContainingAndContentContaining(String string, String name);
+
+    List<Document> findByPayment_Order_CustomerId(Long id);
 }

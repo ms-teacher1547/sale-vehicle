@@ -59,7 +59,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/customers/{companyId}/subsidiaries").hasAnyRole("ADMIN", "USER") // ✅ Un COMPANY peut ajouter une filiale
                 .requestMatchers(HttpMethod.GET, "/api/customers/{companyId}/subsidiaries").hasAnyRole("ADMIN", "USER") // ✅ Un COMPANY peut voir ses filiales               
                 .requestMatchers(HttpMethod.POST, "/api/payments/**").hasAnyRole("USER", "ADMIN")
-                .requestMatchers(HttpMethod.GET, "/api/payments/**").hasAnyRole("USER", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/payments/my-invoices").hasRole("USER")
+                .requestMatchers(HttpMethod.GET, "/api/payments/invoice/**").hasAnyRole("USER", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/payments/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/payments/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/api/options/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/api/options/incompatible").hasRole("ADMIN")

@@ -1,7 +1,9 @@
 package com.tpinf4067.sale_vehicle.Controller;
 
 import com.tpinf4067.sale_vehicle.patterns.auth.User;
+import com.tpinf4067.sale_vehicle.patterns.document.Document;
 import com.tpinf4067.sale_vehicle.patterns.payment.*;
+import com.tpinf4067.sale_vehicle.repository.DocumentRepository;
 import com.tpinf4067.sale_vehicle.service.PaymentService;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -12,15 +14,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/payments")
 public class PaymentController {
 
     private final PaymentService paymentService;
+    private final DocumentRepository documentRepository;
 
-    public PaymentController(PaymentService paymentService) {
+    public PaymentController(PaymentService paymentService, DocumentRepository documentRepository) {
         this.paymentService = paymentService;
+        this.documentRepository = documentRepository;
     }
 
     // ✅ Création d’un paiement (récupération automatique de la commande en attente)
@@ -44,11 +49,28 @@ public class PaymentController {
         return ResponseEntity.ok(paymentService.rejectPayment(user));
     }
 
-    // ✅ Téléchargement de la facture PDF (génération unique pour chaque facture)
-    @GetMapping("/invoice/{filename}")
-    public ResponseEntity<Resource> downloadInvoice(@PathVariable String filename) {
+    // ✅ Récupérer toutes les factures pour ADMIN
+    @GetMapping("/invoices")
+    public ResponseEntity<List<Document>> getAllInvoices() {
+        List<Document> invoices = documentRepository.findAll();
+        return ResponseEntity.ok(invoices);
+    }
+
+    // ✅ Récupérer uniquement les factures du USER connecté
+    @GetMapping("/my-invoices")
+    public ResponseEntity<List<Document>> getUserInvoices(@AuthenticationPrincipal User user) {
+        List<Document> invoices = documentRepository.findByPayment_Order_CustomerId(user.getCustomer().getId());
+        return ResponseEntity.ok(invoices);
+    }
+
+    // ✅ Télécharger une facture par ID (au lieu du filename)
+    @GetMapping("/invoice/download/{id}")
+    public ResponseEntity<Resource> downloadInvoice(@PathVariable Long id) {
+        Document invoice = documentRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("❌ Facture introuvable"));
+
         try {
-            Path filePath = Paths.get("documents").resolve(filename).normalize();
+            Path filePath = Paths.get("documents").resolve(invoice.getFilename()).normalize();
             Resource resource = new UrlResource(filePath.toUri());
 
             if (!resource.exists() || !resource.isReadable()) {
@@ -62,4 +84,5 @@ public class PaymentController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
 }

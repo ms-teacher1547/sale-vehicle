@@ -101,6 +101,9 @@ public class OrderService {
 
         System.out.println("📄 Construction des documents pour la commande #" + orderId);
 
+        // 🔥 Réinitialisation des documents pour éviter l'accumulation d'anciens fichiers
+        DocumentLiasseSingleton.getInstance().clearDocuments();
+
         OrderDocumentBuilder builder = new OrderDocumentBuilder();
         builder.constructOrderDocuments(order);
 
@@ -115,7 +118,7 @@ public class OrderService {
         for (Document document : documents) {
             String formattedTitle = document.getTitle() + " - Commande #" + orderId;
             String fileName = formattedTitle.replace(" ", "_").replace("'", "") + ".pdf"; // ✅ Nettoyage du nom de fichier
-            
+
             document.setTitle(formattedTitle);
             document.setFilename(fileName); // ✅ Ajoute le nom du fichier
             document.setOrder(order); // ✅ Associe le document à la commande
@@ -127,6 +130,7 @@ public class OrderService {
         orderRepository.save(order); // ✅ Sauvegarde en base avec les documents
         System.out.println("✅ Tous les documents ont été générés et stockés en base pour la commande #" + orderId);
     }
+
 
 
 
