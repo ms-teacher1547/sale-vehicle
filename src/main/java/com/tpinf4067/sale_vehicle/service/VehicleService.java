@@ -159,7 +159,7 @@ public class VehicleService {
     // ✅ Appliquer une réduction de 20% sur les véhicules en stock depuis plus de 6 mois
     public List<Vehicle> applyDiscountForOldStock() {
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.MONTH, -6); // Définir la date d'il y a 6 mois
+        cal.add(Calendar.SECOND, -10); // Définir la date d'il y a 10 secondes
         Date sixMonthsAgo = cal.getTime();
 
         List<Vehicle> oldStockVehicles = vehicleRepository.findAll().stream()
@@ -167,7 +167,7 @@ public class VehicleService {
                 .toList();
 
         for (Vehicle vehicle : oldStockVehicles) {
-            double newPrice = vehicle.getPrice() * 0.8; // Appliquer une réduction de 20%
+            double newPrice = vehicle.getPrice() * 0.2; // Appliquer une réduction de 20%
             vehicle.setPrice(newPrice);
             vehicleRepository.save(vehicle);
         }
