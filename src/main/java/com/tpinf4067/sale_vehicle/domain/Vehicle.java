@@ -51,6 +51,9 @@ public abstract class Vehicle {
     // Ajout du champ pour l'animation
     private String animationUrl;
 
+    // ✅ Nouveau champ pour stocker l'URL de l'image
+    private String imageUrl;
+
     // Ajout du champ pour la date d'ajout
     @Column(name = "date_ajout", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)

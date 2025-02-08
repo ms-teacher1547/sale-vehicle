@@ -1,9 +1,13 @@
 package com.tpinf4067.sale_vehicle.Controller;
 
 import java.util.List;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tpinf4067.sale_vehicle.domain.Car;
 import com.tpinf4067.sale_vehicle.domain.Scooter;
 import com.tpinf4067.sale_vehicle.domain.Vehicle;
@@ -28,17 +32,61 @@ public class CatalogController {
     }
 
 
-    // ✅ Ajouter une voiture
-    @PostMapping("/vehicles/car")
-    public Vehicle addCar(@RequestBody Car car) {
-        return vehicleService.saveVehicle(car);
+    // ✅ Ajouter une voiture avec image
+    @PostMapping(value = "/vehicles/car", consumes = {"multipart/form-data"})
+    public ResponseEntity<Vehicle> addCar(
+            @RequestPart("vehicle") String vehicleJson,
+            @RequestPart("image") MultipartFile imageFile) {
+        
+        try {
+            // 🔥 Convertir le JSON en objet `Car`
+            ObjectMapper objectMapper = new ObjectMapper();
+            Car car = objectMapper.readValue(vehicleJson, Car.class);
+
+            // 🔥 Sauvegarde du véhicule
+            Vehicle savedVehicle = vehicleService.saveVehicle(car);
+
+            // 🔥 Sauvegarde de l'image si elle est fournie
+            if (!imageFile.isEmpty()) {
+                String imageUrl = vehicleService.saveVehicleImage(savedVehicle.getId(), imageFile);
+                savedVehicle.setAnimationUrl(imageUrl);
+                vehicleService.saveVehicle(savedVehicle);
+            }
+
+            return ResponseEntity.ok(savedVehicle);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
-    // ✅ Ajouter un scooter
-    @PostMapping("/vehicles/scooter")
-    public Vehicle addScooter(@RequestBody Scooter scooter) {
-        return vehicleService.saveVehicle(scooter);
+
+    // ✅ Ajouter un scooter avec image
+    @PostMapping(value = "/vehicles/scooter", consumes = {"multipart/form-data"})
+    public ResponseEntity<Vehicle> addScooter(
+            @RequestPart("vehicle") String vehicleJson,
+            @RequestPart("image") MultipartFile imageFile) {
+        
+        try {
+            // 🔥 Convertir le JSON en objet `Scooter`
+            ObjectMapper objectMapper = new ObjectMapper();
+            Scooter scooter = objectMapper.readValue(vehicleJson, Scooter.class);
+    
+            // 🔥 Sauvegarde du véhicule
+            Vehicle savedVehicle = vehicleService.saveVehicle(scooter);
+    
+            // 🔥 Sauvegarde de l'image si elle est fournie
+            if (!imageFile.isEmpty()) {
+                String imageUrl = vehicleService.saveVehicleImage(savedVehicle.getId(), imageFile);
+                savedVehicle.setAnimationUrl(imageUrl);
+                vehicleService.saveVehicle(savedVehicle);
+            }
+    
+            return ResponseEntity.ok(savedVehicle);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
+    
 
     // ✅ Supprimer un véhicule
     @DeleteMapping("/vehicles/{id}")
@@ -114,6 +162,20 @@ public class CatalogController {
     }
 
     // ✅ Récupérer les détails d'un véhicule spécifique
+    // @GetMapping("/vehicles/{id}")
+    // public ResponseEntity<Vehicle> getVehicleDetails(@PathVariable Long id) {
+    //     Vehicle vehicle = vehicleService.getVehicleById(id);
+    //     return vehicle != null ? ResponseEntity.ok(vehicle) : ResponseEntity.notFound().build();
+    // }
+
+    // ✅ Upload d'une image pour un véhicule
+    @PostMapping("/vehicles/{id}/image")
+    public ResponseEntity<Vehicle> uploadVehicleImage(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+        Vehicle updatedVehicle = vehicleService.uploadVehicleImage(id, file);
+        return updatedVehicle != null ? ResponseEntity.ok(updatedVehicle) : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    // ✅ Récupérer un véhicule avec son image
     @GetMapping("/vehicles/{id}")
     public ResponseEntity<Vehicle> getVehicleDetails(@PathVariable Long id) {
         Vehicle vehicle = vehicleService.getVehicleById(id);

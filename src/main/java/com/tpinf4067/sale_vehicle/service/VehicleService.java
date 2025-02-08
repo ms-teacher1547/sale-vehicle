@@ -7,7 +7,13 @@ import com.tpinf4067.sale_vehicle.patterns.catalog.observer.VehicleNotifier;
 import com.tpinf4067.sale_vehicle.repository.VehicleRepository;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -21,6 +27,7 @@ public class VehicleService {
     // 🔥 Injection du notificateur
     private final VehicleRepository vehicleRepository;
     private final VehicleNotifier vehicleNotifier; // Ajout du notificateur
+    private final String IMAGE_DIR = "uploads/";
 
     public VehicleService(VehicleRepository vehicleRepository) {
         this.vehicleRepository = vehicleRepository;
@@ -159,7 +166,7 @@ public class VehicleService {
     // ✅ Appliquer une réduction de 20% sur les véhicules en stock depuis plus de 6 mois
     public List<Vehicle> applyDiscountForOldStock() {
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.MONTH, -6); // Définir la date d'il y a 6 mois
+        cal.add(Calendar.MINUTE, -1); // Définir la date d'il y a 6 mois
         Date sixMonthsAgo = cal.getTime();
 
         List<Vehicle> oldStockVehicles = vehicleRepository.findAll().stream()
@@ -189,5 +196,46 @@ public class VehicleService {
     public List<Vehicle> getAllAvailableVehicles() {
         return vehicleRepository.findAvailableVehicles();
     }    
+
+    // ✅ Méthode pour uploader une image
+      public Vehicle uploadVehicleImage(Long vehicleId, MultipartFile file) {
+        return vehicleRepository.findById(vehicleId).map(vehicle -> {
+            try {
+                // 🔥 Création du dossier s'il n'existe pas
+                Path uploadPath = Paths.get(IMAGE_DIR);
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                // 🔥 Sauvegarde du fichier
+                String fileName = "vehicle_" + vehicleId + "_" + file.getOriginalFilename();
+                Path filePath = uploadPath.resolve(fileName);
+                Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+                // 🔥 Mise à jour de l'URL dans la BD
+                vehicle.setAnimationUrl("/uploads/" + fileName);
+                return vehicleRepository.save(vehicle);
+
+            } catch (Exception e) {
+                throw new RuntimeException("Impossible d'enregistrer l'image : " + e.getMessage());
+            }
+        }).orElseThrow(() -> new RuntimeException("Véhicule non trouvé !"));
+    }
+
+    public String saveVehicleImage(Long vehicleId, MultipartFile file) throws IOException {
+        String uploadDir = "uploads/vehicles/";
+        String fileName = "vehicle_" + vehicleId + "_" + file.getOriginalFilename();
+        Path uploadPath = Paths.get(uploadDir);
+    
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+    
+        Path filePath = uploadPath.resolve(fileName);
+        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+    
+        return "/uploads/vehicles/" + fileName; // Retourne l'URL de l'image
+    }
+    
 
 }
