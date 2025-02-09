@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tpinf4067.sale_vehicle.domain.Car;
 import com.tpinf4067.sale_vehicle.domain.Scooter;
 import com.tpinf4067.sale_vehicle.domain.Vehicle;
+import com.tpinf4067.sale_vehicle.repository.VehicleRepository;
 import com.tpinf4067.sale_vehicle.service.VehicleService;
 
 @RestController
@@ -18,18 +19,29 @@ import com.tpinf4067.sale_vehicle.service.VehicleService;
 public class CatalogController {
 
     private final VehicleService vehicleService;
+    private final VehicleRepository vehicleRepository;
 
-    public CatalogController(VehicleService vehicleService) {
+    public CatalogController(VehicleService vehicleService, VehicleRepository vehicleRepository) {
         this.vehicleService = vehicleService;
+        this.vehicleRepository = vehicleRepository;
     }
 
     // ✅ Récupérer tous les véhicules avec affichage décoré
     // ✅ Maintenant, on retourne une vraie liste JSON d'objets Vehicle !
     @GetMapping("/vehicles")
-    public ResponseEntity<List<Vehicle>> getAllVehicles() {
-        List<Vehicle> vehicles = vehicleService.getAllVehicles();
-        return ResponseEntity.ok(vehicles);
+    public List<Vehicle> getAllVehicles() {
+        List<Vehicle> vehicles = vehicleRepository.findAll();
+        
+        // 🔥 Vérification pour éviter les null
+        vehicles.forEach(vehicle -> {
+            if (vehicle.getImageUrl() == null && vehicle.getAnimationUrl() != null) {
+                vehicle.setImageUrl(vehicle.getAnimationUrl());
+            }
+        });
+    
+        return vehicles;
     }
+    
 
 
     // ✅ Ajouter une voiture avec image

@@ -49,3 +49,4 @@ node_modules/
 # Ignorer les bases de données locales
 data/
 documents/
+uploads/vehicles/

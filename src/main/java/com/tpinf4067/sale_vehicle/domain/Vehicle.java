@@ -2,6 +2,8 @@ package com.tpinf4067.sale_vehicle.domain;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
@@ -78,5 +80,11 @@ public abstract class Vehicle {
             throw new IllegalStateException("Stock insuffisant pour ce véhicule.");
         }
     } 
+
+    @JsonProperty("imageUrl")
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
 
 }

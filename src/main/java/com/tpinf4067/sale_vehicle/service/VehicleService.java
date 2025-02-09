@@ -213,7 +213,8 @@ public class VehicleService {
                 Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
                 // 🔥 Mise à jour de l'URL dans la BD
-                vehicle.setAnimationUrl("/uploads/" + fileName);
+                vehicle.setAnimationUrl("/uploads/vehicles" + fileName);
+                vehicle.setImageUrl("/uploads/vehicles" + fileName);
                 return vehicleRepository.save(vehicle);
 
             } catch (Exception e) {
@@ -234,8 +235,14 @@ public class VehicleService {
         Path filePath = uploadPath.resolve(fileName);
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
     
+        // ✅ Mettre à jour l'URL de l'image dans la BD
+        Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new RuntimeException("Véhicule non trouvé !"));
+        vehicle.setImageUrl("/uploads/vehicles/" + fileName);
+        vehicleRepository.save(vehicle);
+    
         return "/uploads/vehicles/" + fileName; // Retourne l'URL de l'image
     }
+    
     
 
 }
