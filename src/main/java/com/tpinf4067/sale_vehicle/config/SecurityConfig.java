@@ -58,6 +58,12 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/api/customers/{id}").hasAnyRole("ADMIN", "USER") // ✅ Seul ADMIN peut supprimer un client
                 .requestMatchers(HttpMethod.POST, "/api/customers/{companyId}/subsidiaries").hasAnyRole("ADMIN", "USER") // ✅ Un COMPANY peut ajouter une filiale
                 .requestMatchers(HttpMethod.GET, "/api/customers/{companyId}/subsidiaries").hasAnyRole("ADMIN", "USER") // ✅ Un COMPANY peut voir ses filiales               
+                .requestMatchers(HttpMethod.POST, "/api/fleet-proposals/company/{companyId}").hasAnyRole("ADMIN", "USER") // ✅ Créer une proposition de flotte
+                .requestMatchers(HttpMethod.GET, "/api/fleet-proposals/company/{companyId}").hasAnyRole("ADMIN", "USER") // ✅ Voir les propositions de flotte d'une entreprise
+                .requestMatchers(HttpMethod.GET, "/api/fleet-proposals/{proposalId}").hasAnyRole("ADMIN", "USER") // ✅ Voir une proposition de flotte spécifique
+                .requestMatchers(HttpMethod.PUT, "/api/fleet-proposals/{proposalId}/status").hasAnyRole("ADMIN", "USER") // ✅ Mettre à jour le statut d'une proposition
+                .requestMatchers(HttpMethod.GET, "/api/fleet-proposals/status/{status}").hasRole("ADMIN") // ✅ Voir les propositions par statut (admin uniquement)
+                .requestMatchers(HttpMethod.GET, "/api/companies/with-subsidiaries").hasAnyRole("ADMIN", "USER") // ✅ Voir les entreprises avec filiales
                 .requestMatchers(HttpMethod.POST, "/api/payments/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/payments/my-invoices").hasRole("USER")
                 .requestMatchers(HttpMethod.GET, "/api/payments/invoice/**").hasAnyRole("USER", "ADMIN")
@@ -82,7 +88,9 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // ✅ Maintient les sessions actives
                 .maximumSessions(1)
                 .expiredUrl("/api/auth/login?expired")
-            );
+            )
+            .exceptionHandling(ex -> ex.authenticationEntryPoint((request, response, authException) -> 
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")));
 
         return http.build();
     }
@@ -99,6 +107,4 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
 }

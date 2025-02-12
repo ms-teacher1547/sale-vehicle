@@ -6,6 +6,8 @@ import com.tpinf4067.sale_vehicle.patterns.catalog.observer.Observer;
 import com.tpinf4067.sale_vehicle.patterns.catalog.observer.VehicleNotifier;
 import com.tpinf4067.sale_vehicle.repository.VehicleRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,10 +21,13 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class VehicleService {
+
+    private static final Logger logger = LoggerFactory.getLogger(VehicleService.class);
 
     // 🔥 Injection du notificateur
     private final VehicleRepository vehicleRepository;
@@ -194,7 +199,11 @@ public class VehicleService {
     }
     
     public List<Vehicle> getAllAvailableVehicles() {
-        return vehicleRepository.findAvailableVehicles();
+        List<Vehicle> availableVehicles = vehicleRepository.findAvailableVehicles();
+        
+        logger.info("Nombre de véhicules disponibles : {}", availableVehicles.size());
+        
+        return availableVehicles;
     }    
 
     // ✅ Méthode pour uploader une image
