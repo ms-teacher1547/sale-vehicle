@@ -131,7 +131,7 @@ public class CustomerService {
         }
     
         // ✅ Ajouter la filiale
-        subsidiary.setType(CustomerType.COMPANY);
+        subsidiary.setType(CustomerType.FILIALE);
         company.getSubsidiaries().add(subsidiary);
         return customerRepository.save(company);
     }
