@@ -16,7 +16,6 @@ import com.tpinf4067.sale_vehicle.service.VehicleService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import lombok.AllArgsConstructor;
