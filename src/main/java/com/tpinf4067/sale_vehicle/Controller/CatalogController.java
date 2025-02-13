@@ -14,9 +14,19 @@ import com.tpinf4067.sale_vehicle.domain.Vehicle;
 import com.tpinf4067.sale_vehicle.repository.VehicleRepository;
 import com.tpinf4067.sale_vehicle.service.VehicleService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 @RestController
 @RequestMapping("/api/catalog")
 public class CatalogController {
+
+    private final Logger logger = LoggerFactory.getLogger(CatalogController.class);
 
     private final VehicleService vehicleService;
     private final VehicleRepository vehicleRepository;
@@ -102,9 +112,20 @@ public class CatalogController {
 
     // ✅ Supprimer un véhicule
     @DeleteMapping("/vehicles/{id}")
-    public String deleteVehicle(@PathVariable Long id) {
-        vehicleService.deleteVehicleById(id);
-        return "Vehicle avec l'id " + id + " a été supprimé avec succès";
+    public ResponseEntity<String> deleteVehicle(@PathVariable Long id) {
+        try {
+            Vehicle vehicle = vehicleService.getVehicleById(id);
+            if (vehicle == null) {
+                return ResponseEntity.notFound().build();
+            }
+            
+            vehicleService.deleteVehicleById(id);
+            return ResponseEntity.ok("Vehicle avec l'id " + id + " a été supprimé avec succès");
+        } catch (Exception e) {
+            logger.error("Error deleting vehicle with id {}: {}", id, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Erreur lors de la suppression du véhicule: " + e.getMessage());
+        }
     }
 
     // ✅ Recherche avancée dans le catalogue
@@ -160,25 +181,67 @@ public class CatalogController {
 
     // 🔹 Mettre à jour les détails d'un véhicule
     @PutMapping("/vehicles/{id}/update")
-    public ResponseEntity<Vehicle> updateVehicleDetails(
-        @PathVariable Long id,
-        @RequestBody VehicleUpdateRequest request) { // Utiliser un objet pour le corps de la requête
-        Vehicle updatedVehicle = vehicleService.updateVehicleDetails(
-            id,
-            request.getStockQuantity(),
-            request.getYearOfManufacture(),
-            request.getFuelType(),
-            request.getMileage()
-        );
-        return updatedVehicle != null ? ResponseEntity.ok(updatedVehicle) : ResponseEntity.notFound().build();
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateVehicleDetails(
+            @PathVariable Long id,
+            @RequestBody Vehicle updatedVehicle) {
+        try {
+            // Récupérer le véhicule existant
+            Vehicle existingVehicle = vehicleService.getVehicleById(id);
+            if (existingVehicle == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // Créer une nouvelle instance du bon type
+            Vehicle vehicleToUpdate;
+            if (existingVehicle instanceof Car) {
+                Car car = new Car();
+                car.setId(id);
+                car.setName(updatedVehicle.getName());
+                car.setPrice(updatedVehicle.getPrice());
+                car.setStockQuantity(updatedVehicle.getStockQuantity());
+                car.setYearOfManufacture(updatedVehicle.getYearOfManufacture());
+                car.setFuelType(updatedVehicle.getFuelType());
+                car.setMileage(updatedVehicle.getMileage());
+                car.setAnimationUrl(updatedVehicle.getAnimationUrl());
+                car.setImageUrl(updatedVehicle.getImageUrl());
+                
+                // Set Car-specific properties
+                if (updatedVehicle instanceof Car) {
+                    car.setNumberOfDoors(((Car) updatedVehicle).getNumberOfDoors());
+                } else {
+                    // If not explicitly set, keep the existing number of doors
+                    car.setNumberOfDoors(((Car) existingVehicle).getNumberOfDoors());
+                }
+                vehicleToUpdate = car;
+            } else if (existingVehicle instanceof Scooter) {
+                // Similar handling for Scooter if needed
+                return ResponseEntity.badRequest().body("Cannot update Scooter type");
+            } else {
+                return ResponseEntity.badRequest().body("Unknown vehicle type");
+            }
+            
+            // Appeler le service pour mettre à jour le véhicule
+            Vehicle updated = vehicleService.updateVehicle(vehicleToUpdate);
+            
+            if (updated != null) {
+                return ResponseEntity.ok(updated);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            logger.error("Erreur lors de la mise à jour du véhicule {}: {}", id, e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erreur lors de la mise à jour: " + e.getMessage());
+        }
     }
 
-    // ✅ Récupérer les détails d'un véhicule spécifique
-    // @GetMapping("/vehicles/{id}")
-    // public ResponseEntity<Vehicle> getVehicleDetails(@PathVariable Long id) {
-    //     Vehicle vehicle = vehicleService.getVehicleById(id);
-    //     return vehicle != null ? ResponseEntity.ok(vehicle) : ResponseEntity.notFound().build();
-    // }
+    @Getter
+    @AllArgsConstructor
+    private static class ErrorResponse {
+        private final String error;
+        private final String message;
+    }
 
     // ✅ Upload d'une image pour un véhicule
     @PostMapping("/vehicles/{id}/image")
@@ -233,6 +296,4 @@ public class CatalogController {
             this.mileage = mileage;
         }
     }
-
-
 }

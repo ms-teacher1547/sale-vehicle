@@ -1,12 +1,17 @@
 package com.tpinf4067.sale_vehicle.service;
 
+import com.tpinf4067.sale_vehicle.domain.Car;
+import com.tpinf4067.sale_vehicle.domain.Scooter;
 import com.tpinf4067.sale_vehicle.domain.Vehicle;
 import com.tpinf4067.sale_vehicle.patterns.catalog.observer.EmailNotifier;
 import com.tpinf4067.sale_vehicle.patterns.catalog.observer.Observer;
 import com.tpinf4067.sale_vehicle.patterns.catalog.observer.VehicleNotifier;
 import com.tpinf4067.sale_vehicle.repository.VehicleRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -19,10 +24,13 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class VehicleService {
+
+    private static final Logger logger = LoggerFactory.getLogger(VehicleService.class);
 
     // 🔥 Injection du notificateur
     private final VehicleRepository vehicleRepository;
@@ -59,7 +67,15 @@ public class VehicleService {
     }
 
     // ✅ Ajout de la méthode de suppression
+    @Transactional
     public void deleteVehicleById(Long id) {
+        // First, delete all references in order_vehicles
+        vehicleRepository.deleteOrderVehiclesForVehicle(id);
+        
+        // Then, delete all references in cart_items
+        vehicleRepository.deleteCartItemsForVehicle(id);
+        
+        // Finally, delete the vehicle itself
         vehicleRepository.deleteById(id);
     }
 
@@ -182,6 +198,45 @@ public class VehicleService {
         return oldStockVehicles;
     }
 
+    // ✅ Mise à jour d'un véhicule avec gestion des références
+    @Transactional
+    public Vehicle updateVehicle(Vehicle updatedVehicle) {
+        Vehicle existingVehicle = vehicleRepository.findById(updatedVehicle.getId())
+                .orElseThrow(() -> new RuntimeException("Véhicule non trouvé"));
+
+        // Mise à jour des propriétés de base
+        existingVehicle.setName(updatedVehicle.getName());
+        existingVehicle.setPrice(updatedVehicle.getPrice());
+        existingVehicle.setStockQuantity(updatedVehicle.getStockQuantity());
+        existingVehicle.setYearOfManufacture(updatedVehicle.getYearOfManufacture());
+        existingVehicle.setFuelType(updatedVehicle.getFuelType());
+        existingVehicle.setMileage(updatedVehicle.getMileage());
+
+        // Mise à jour des propriétés spécifiques selon le type de véhicule
+        if (existingVehicle instanceof Car && updatedVehicle instanceof Car) {
+            ((Car) existingVehicle).setNumberOfDoors(((Car) updatedVehicle).getNumberOfDoors());
+        } else if (existingVehicle instanceof Scooter && updatedVehicle instanceof Scooter) {
+            ((Scooter) existingVehicle).setHasStorageBox(((Scooter) updatedVehicle).isHasStorageBox());
+        }
+
+        // Mise à jour des URLs si présents
+        if (updatedVehicle.getImageUrl() != null) {
+            existingVehicle.setImageUrl(updatedVehicle.getImageUrl());
+        }
+        if (updatedVehicle.getAnimationUrl() != null) {
+            existingVehicle.setAnimationUrl(updatedVehicle.getAnimationUrl());
+        }
+
+        try {
+            // Sauvegarder et notifier
+            Vehicle savedVehicle = vehicleRepository.save(existingVehicle);
+            vehicleNotifier.notifyObservers("🔄 Véhicule mis à jour : " + savedVehicle.getName());
+            return savedVehicle;
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur lors de la mise à jour du véhicule : " + e.getMessage());
+        }
+    }
+
     // ✅ Mettre à jour les détails d'un véhicule
     public Vehicle updateVehicleDetails(Long vehicleId, int stockQuantity, int yearOfManufacture, String fuelType, int mileage) {
         return vehicleRepository.findById(vehicleId).map(vehicle -> {
@@ -194,7 +249,11 @@ public class VehicleService {
     }
     
     public List<Vehicle> getAllAvailableVehicles() {
-        return vehicleRepository.findAvailableVehicles();
+        List<Vehicle> availableVehicles = vehicleRepository.findAvailableVehicles();
+        
+        logger.info("Nombre de véhicules disponibles : {}", availableVehicles.size());
+        
+        return availableVehicles;
     }    
 
     // ✅ Méthode pour uploader une image

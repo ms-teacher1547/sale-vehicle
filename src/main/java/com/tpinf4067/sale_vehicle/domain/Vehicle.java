@@ -33,6 +33,10 @@ public abstract class Vehicle {
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Long id;
 
+    @Column(name = "vehicle_type", insertable = false, updatable = false)
+    @JsonProperty("vehicle_type")
+    private String vehicleType;
+
     private String name;
     private Double price;
 
@@ -53,7 +57,7 @@ public abstract class Vehicle {
     // Ajout du champ pour l'animation
     private String animationUrl;
 
-    // ✅ Nouveau champ pour stocker l'URL de l'image
+    // Nouveau champ pour stocker l'URL de l'image
     private String imageUrl;
 
     // Ajout du champ pour la date d'ajout
@@ -85,6 +89,4 @@ public abstract class Vehicle {
     public String getImageUrl() {
         return imageUrl;
     }
-
-
 }
