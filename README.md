@@ -6,7 +6,6 @@ Ce projet est une application Spring Boot pour la gestion des ventes de véhicul
 
 - Java 11 ou supérieur
 - Maven 3.6 ou supérieur
-- PostgreSQL 12 ou supérieur
 
 ## Installation
 
@@ -17,12 +16,7 @@ Ce projet est une application Spring Boot pour la gestion des ventes de véhicul
     cd sale-vehicle
     ```
 
-2. Configurez la base de données PostgreSQL :
-
-    - Créez une base de données PostgreSQL nommée `sale_vehicle_db`.
-    - Mettez à jour les informations de connexion à la base de données dans le fichier [application.properties]
-
-3. Installez les dépendances Maven et compilez le projet :
+2. Installez les dépendances Maven et compilez le projet :
 
     ```bash
     mvn clean install
@@ -36,13 +30,6 @@ Le fichier de configuration principal est [application.properties]. Voici les pr
 spring.application.name=sale-vehicle
 server.port=8081
 
-# Configuration de la base de données PostgreSQL
-spring.datasource.url=jdbc:postgresql://127.0.0.1:5432/sale_vehicle_db
-spring.datasource.username=postgres
-spring.datasource.password=teacher1547.psql
-spring.datasource.driver-class-name=org.postgresql.Driver
-spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
-spring.jpa.hibernate.ddl-auto=update
 
 # Configuration JPA / Hibernate
 spring.jpa.show-sql=true
@@ -56,3 +43,18 @@ spring.web.resources.static-locations=file:./uploads/
 
 # Logging
 logging.level.org.springframework.security=DEBUG
+
+
+
+### Pour se connecter 
+_- entant que ADMIN
+username : admin2
+password : mahamat
+
+- USER 
+username : ms   
+password : ms1547
+
+-  USER (COMPANY)
+username : entreprise
+password : entreprise1
