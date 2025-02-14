@@ -47,6 +47,4 @@ node_modules/
 .idea/
 
 # Ignorer les bases de données locales
-data/
 documents/
-uploads/vehicles/
