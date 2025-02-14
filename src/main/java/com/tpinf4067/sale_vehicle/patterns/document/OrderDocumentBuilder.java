@@ -119,4 +119,7 @@ public class OrderDocumentBuilder implements DocumentBuilder {
         cessionDoc.setContent(cessionContent.toString());
         DocumentLiasseSingleton.getInstance().addDocument(cessionDoc);
     }
+    //ajout de la methode utiliser par PDFDocumentAdapter
+    public void export(Document document){}    
+
 }

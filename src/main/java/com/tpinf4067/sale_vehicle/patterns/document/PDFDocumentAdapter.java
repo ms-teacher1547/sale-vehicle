@@ -1,6 +1,6 @@
 package com.tpinf4067.sale_vehicle.patterns.document;
 
-public class PDFDocumentAdapter {
+public class PDFDocumentAdapter extends OrderDocumentBuilder{
     private final PDFExporter pdfExporter;
 
     public PDFDocumentAdapter() {

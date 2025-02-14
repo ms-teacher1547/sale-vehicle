@@ -4,4 +4,6 @@ public interface DocumentBuilder {
     void setTitle(String title);
     void setContent(String content);
     Document getDocument();
+    void export(Document document);
+
 }
